@@ -197,33 +197,30 @@ func check_initial_pieces_win_condition() -> void:
 	# Emitir actualización de piezas iniciales
 	initial_pieces_updated.emit(p1_cleared, p2_cleared)
 	
-	# VERIFICAR VICTORIA INMEDIATA - no esperar al siguiente match
+	# Verificar condiciones de victoria o empate
 	if p1_cleared >= 10 and p2_cleared >= 10:
 		print("🎉 EMPATE - Ambos limpiaron las 10 piezas iniciales!")
 		game_over.emit("EMPATE!\nAmbos limpiaron las 10 piezas iniciales!")
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_draw")
-		# CONGELAR JUEGO INMEDIATAMENTE PARA AMBOS JUGADORES
 		freeze_game_completely()
 		
 	elif p1_cleared >= 10:
 		print("🎉 P1 GANA - Limpió las 10 piezas iniciales primero!")
-		game_over.emit("JUGADOR 1 GANA!\nLimpio las 10 piezas iniciales primero!")
+		game_over.emit("JUGADOR 1 GANA!\nLimpió las 10 piezas iniciales primero!")
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_win")
-		# CONGELAR JUEGO INMEDIATAMENTE PARA AMBOS JUGADORES
 		freeze_game_completely()
 		
 	elif p2_cleared >= 10:
 		print("🎉 P2 GANA - Limpió las 10 piezas iniciales primero!")
-		game_over.emit("JUGADOR 2 GANA!\nLimpio las 10 piezas iniciales primero!")
+		game_over.emit("JUGADOR 2 GANA!\nLimpió las 10 piezas iniciales primero!")
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_win")
-		# CONGELAR JUEGO INMEDIATAMENTE PARA AMBOS JUGADORES
 		freeze_game_completely()
 
-# NUEVA FUNCIÓN: Congelar juego completamente para AMBOS jugadores
-func freeze_game_completely():
+
+func freeze_game_completely() -> void:
 	print("❄️❄️❄️ CONGELANDO JUEGO COMPLETAMENTE - AMBOS JUGADORES")
 	is_timer_running = false
 	game_paused = true
@@ -231,35 +228,24 @@ func freeze_game_completely():
 	# Congelar ambos jugadores mediante señal
 	freeze_all_players.emit(true)
 	
-	# Actualizar main.game_paused de manera segura
+	# Actualizar estado en main
 	if main and main.has_method("set_game_paused"):
 		main.set_game_paused(true)
 	elif main:
 		main.game_paused = true
 	
-	# DESACTIVAR INPUTS Y LÓGICA DEL JUEGO
+	# Detener lógica de piezas si es posible
 	if piece_logic and piece_logic.has_method("_on_freeze_all_players"):
 		piece_logic._on_freeze_all_players(true)
 	
 	print("✅ JUEGO COMPLETAMENTE CONGELADO - NINGÚN JUGADOR PUEDE MOVERSE")
 
+
 func _on_initial_pieces_updated(_p1_cleared: int, _p2_cleared: int) -> void:
 	# Este método es necesario para la conexión de señales
 	pass
 
-func _on_game_over(losing_player_id: String, winning_player_id: String):
-	print("🎯 JUEGO TERMINADO - %s pierde, %s gana" % [losing_player_id, winning_player_id])
-	
-	# Congelar TODOS los jugadores inmediatamente
-	game_paused = true
-	is_timer_running = false
-	
-	# Emitir señal para congelar todos los players visualmente
-	freeze_all_players.emit(true)  # ← CON PARÁMETRO
-	
-	# Detener cualquier lógica de juego continuo
-	set_process(false)
-	set_physics_process(false)
+
 
 # === Manejo de piezas colocadas ===
 func _on_piece_landed(_player) -> void:
@@ -283,7 +269,6 @@ func check_board_full_condition() -> void:
 	if not p1 or not p2:
 		return
 	
-	# CORRECCIÓN: Verificar si los jugadores están activos
 	var p1_game_over = false
 	var p2_game_over = false
 	
@@ -301,14 +286,18 @@ func check_board_full_condition() -> void:
 		game_over.emit("EMPATE!\nAmbos tableros están llenos!")
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_draw")
+		freeze_game_completely()
 	elif p1_game_over:
 		game_over.emit("JUGADOR 2 GANA!\nTablero de P1 lleno!")
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_win")
+		freeze_game_completely()
 	elif p2_game_over:
 		game_over.emit("JUGADOR 1 GANA!\nTablero de P2 lleno!")
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_win")
+		freeze_game_completely()
+
 
 func is_board_full(player) -> bool:
 	var spawn_positions = []

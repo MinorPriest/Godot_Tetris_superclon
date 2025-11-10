@@ -849,6 +849,10 @@ func _on_freeze_player(player: Player, freeze: bool) -> void:
 func _on_freeze_all_players(freeze: bool) -> void:
 	p1.is_frozen = freeze
 	p2.is_frozen = freeze
+	if freeze:
+		print("🧊 PieceLogic: Juego congelado completamente")
+	else:
+		print("▶️ PieceLogic: Juego reanudado")
 	
 # === P1 - FUNCIONES ESPECÍFICAS ===
 func start_new_game_p1() -> void:

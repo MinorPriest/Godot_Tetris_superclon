@@ -21,6 +21,8 @@ var is_game_over: bool = false  # NUEVA VARIABLE CRÍTICA
 func _ready() -> void:
 	print("=== INICIANDO JUEGO ===")
 	initialize_modules()
+
+
 	print("DEBUG: _ready() completado")
 
 func set_setup_phase(setup: bool):
@@ -104,8 +106,8 @@ func initialize_dj() -> void:
 		print("DJ inicializado")
 
 # NUEVA FUNCIÓN: Se llama cuando el juego termina
-func _on_game_over(losing_player: String, winning_player: String):
-	print("🎮 MAIN: JUEGO TERMINADO - ", winning_player, " gana! Congelando todo...")
+func _on_game_over(message: String) -> void:
+	print("🎯 MAIN: GAME OVER - ", message)
 	
 	# Congelar completamente el juego
 	set_game_over(true)
@@ -114,9 +116,14 @@ func _on_game_over(losing_player: String, winning_player: String):
 	if piece_logic and piece_logic.has_method("set_game_over"):
 		piece_logic.set_game_over(true)
 	
-	# Mostrar mensaje final
+	# Mostrar mensaje final en HUD
 	if hud and hud.has_method("show_final_message"):
-		hud.show_final_message(winning_player + " GANA!")
+		hud.show_final_message(message)
+	
+	# Pausa global (redundante pero seguro)
+	get_tree().paused = true
+
+
 
 # NUEVA FUNCIÓN: Se llama cuando termina la fase de setup
 func _on_setup_phase_finished():
