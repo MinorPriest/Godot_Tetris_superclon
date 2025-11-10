@@ -1,0 +1,122 @@
+[gd_scene load_steps=5 format=3 uid="uid://s2kmsbwd3bec"]
+
+[ext_resource type="FontFile" uid="uid://c7g7m08bx583g" path="res://Assets/Fonts/Fortzilla_Font_1_14/TrueType (.ttf)/Fortzilla-Regular.ttf" id="1_psnte"]
+[ext_resource type="Script" uid="uid://daidfnm2jmxj" path="res://Scripts/Main/HUD.gd" id="1_s3jbq"]
+[ext_resource type="FontFile" uid="uid://f0wrkwcqg4jx" path="res://Assets/Fonts/Fortzilla_Font_1_14/OpenType (.otf)/Fortzilla-Regular.otf" id="2_psnte"]
+[ext_resource type="FontFile" uid="uid://vqvpv1oxgbs3" path="res://Assets/Fonts/DigitTech_Font_1_0/Web Open Font Format (.woff)/DigitTech9-Regular.woff" id="3_psnte"]
+
+[node name="Hud" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_s3jbq")
+
+[node name="GameOverLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 350.0
+offset_right = 889.0
+offset_bottom = 600.0
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_psnte")
+theme_override_font_sizes/font_size = 22
+text = "¡GAME OVER!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartNewGame" type="Button" parent="."]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 600.0
+offset_right = 758.0
+offset_bottom = 650.0
+theme_override_fonts/font = ExtResource("2_psnte")
+theme_override_font_sizes/font_size = 24
+text = "INICIAR PARTIDA"
+
+[node name="Time" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 525.0
+offset_right = 625.0
+offset_bottom = 100.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("3_psnte")
+theme_override_font_sizes/font_size = 28
+text = "0.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P1_Score" type="Label" parent="."]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 100.0
+offset_right = 625.0
+offset_bottom = 150.0
+theme_override_fonts/font = ExtResource("2_psnte")
+theme_override_font_sizes/font_size = 20
+text = "0000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P1_SpecialCharges" type="Label" parent="."]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 150.0
+offset_right = 625.0
+offset_bottom = 200.0
+theme_override_fonts/font = ExtResource("2_psnte")
+theme_override_font_sizes/font_size = 20
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P1_Initial" type="Label" parent="."]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 200.0
+offset_right = 625.0
+offset_bottom = 250.0
+theme_override_fonts/font = ExtResource("2_psnte")
+theme_override_font_sizes/font_size = 20
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P2_Score" type="Label" parent="."]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 250.0
+offset_right = 625.0
+offset_bottom = 300.0
+theme_override_fonts/font = ExtResource("2_psnte")
+theme_override_font_sizes/font_size = 20
+text = "0000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P2_SpecialCharges" type="Label" parent="."]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 300.0
+offset_right = 625.0
+offset_bottom = 350.0
+theme_override_fonts/font = ExtResource("2_psnte")
+theme_override_font_sizes/font_size = 20
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P2_Initial" type="Label" parent="."]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 350.0
+offset_right = 625.0
+offset_bottom = 400.0
+theme_override_fonts/font = ExtResource("2_psnte")
+theme_override_font_sizes/font_size = 20
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
