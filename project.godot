@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.5", "Forward Plus")
 [autoload]
 
 ScreenShakeManager="*res://Scripts/Main/ScreenShakeManager.gd"
+ProfileManager="*res://Scripts/Main/ProfileManager.gd"
 
 [display]
 
@@ -30,6 +31,10 @@ folder_colors={
 "res://Scripts/": "purple",
 "res://Sounds/": "pink"
 }
+
+[global]
+
+Music=false
 
 [input]
 

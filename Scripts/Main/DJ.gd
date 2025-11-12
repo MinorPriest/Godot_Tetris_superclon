@@ -2,42 +2,137 @@ extends Node
 
 # Referencias
 var main
+var background_music: AudioStreamPlayer2D
 
-# Recursos de sonido
-var sound_resources: Dictionary = {}
+# Lista de pistas
+var music_tracks: Array[String] = [
+	"res://Sounds/Track1.mp3",
+	"res://Sounds/Track2.mp3", 
+	"res://Sounds/Track3.mp3",
+	"res://Sounds/Track4.mp3",
+	"res://Sounds/Track5.mp3"
+]
+var current_track_index: int = 0
+var played_tracks: Array[int] = []  # Para evitar repeticiones consecutivas
 
 func initialize(main_node) -> void:
 	main = main_node
 	
-	# Cargar recursos de sonido (ajusta las rutas según tu proyecto)
-	sound_resources = {
+	# Inicializar random
+	randomize()
+	
+	# Obtener referencia al nodo BackgroundMusic de la escena
+	background_music = main.get_node("BackgroundMusic")
+	
+	if background_music:
+		print("🎵 BackgroundMusic encontrado en escena")
+		
+		# Configurar la música
+		setup_background_music()
+	else:
+		print("❌ No se encontró el nodo BackgroundMusic en la escena")
+
+func setup_background_music() -> void:
+	if music_tracks.is_empty():
+		print("❌ No hay pistas de música configuradas")
+		return
+	
+	# Cargar una pista aleatoria
+	load_random_track()
+	
+	# CONFIGURACIÓN
+	background_music.volume_db = 0.0
+	background_music.autoplay = true
+	
+	# Conectar la señal de finished
+	if not background_music.finished.is_connected(_on_background_music_finished):
+		background_music.finished.connect(_on_background_music_finished)
+	
+	# FORZAR REPRODUCCIÓN
+	background_music.play()
+	
+	print("🎵 Música ALEATORIA iniciada")
+	print("🎵 Pista actual: ", music_tracks[current_track_index].get_file())
+
+func load_random_track() -> void:
+	if music_tracks.is_empty():
+		return
+	
+	var available_indices = []
+	
+	# Crear lista de índices disponibles (evitando la última reproducida)
+	for i in range(music_tracks.size()):
+		if not played_tracks.has(i) or played_tracks.size() >= music_tracks.size():
+			available_indices.append(i)
+	
+	# Si no hay disponibles, reiniciar
+	if available_indices.is_empty():
+		available_indices = range(music_tracks.size())
+		played_tracks.clear()
+		print("🎵 Reiniciando lista de pistas reproducidas")
+	
+	# Seleccionar aleatoriamente
+	var random_index = available_indices[randi() % available_indices.size()]
+	
+	# Cargar la pista
+	var track_path = music_tracks[random_index]
+	var stream = load(track_path)
+	
+	if stream:
+		background_music.stream = stream
+		current_track_index = random_index
+		
+		# Agregar a la lista de reproducidas
+		played_tracks.append(random_index)
+		
+		print("🎵 Pista aleatoria seleccionada: ", track_path.get_file())
+		print("🎵 Índice: ", random_index)
+	else:
+		print("❌ No se pudo cargar: ", track_path)
+
+func _on_background_music_finished() -> void:
+	print("🎵 Canción terminada - Seleccionando siguiente aleatoria")
+	load_random_track()
+	background_music.play()
+	print("🎵 Nueva pista: ", music_tracks[current_track_index].get_file())
+
+func stop_background_music() -> void:
+	if background_music and background_music.playing:
+		background_music.stop()
+		played_tracks.clear()  # Limpiar historial al detener
+		print("⏹️ Música detenida - Historial limpiado")
+
+# Función para cambiar manualmente a una pista aleatoria
+func play_random_track() -> void:
+	if background_music:
+		background_music.stop()
+		load_random_track()
+		background_music.play()
+		print("🎵 Cambio manual a pista aleatoria")
+
+# Función para obtener información de la pista actual
+func get_current_track_info() -> String:
+	if music_tracks.size() > current_track_index:
+		return music_tracks[current_track_index].get_file()
+	return "No hay pista cargada"
+
+# El resto de las funciones permanecen igual...
+func play_sound(sound_name: String) -> void:
+	var sound_resources = {
 		"piece_land": preload("res://sounds/piece_land.mp3"),
 		"match": preload("res://sounds/match.mp3"),
-		#"charge_gained": preload("res://sounds/charge_gained.wav"),
-		#"attack_launch": preload("res://sounds/attack_launch.wav"),
 		"attack_land": preload("res://sounds/attack_land.mp3"),
 		"game_over_win": preload("res://sounds/game_over_win.mp3"),
-		#"game_over_draw": preload("res://sounds/game_over_draw.wav"),
-		"game_start": preload("res://sounds/game_start.mp3"),
-		#"game_pause": preload("res://sounds/game_pause.wav"),
-		#"game_resume": preload("res://sounds/game_resume.wav")
+		"game_start": preload("res://sounds/game_start.mp3")
 	}
 	
-	print("DJ inicializado - Listo para recibir señales de sonido")
-
-func play_sound(sound_name: String) -> void:
 	if sound_resources.has(sound_name):
-		var audio_player = AudioStreamPlayer.new()
+		var audio_player = AudioStreamPlayer2D.new()
 		audio_player.stream = sound_resources[sound_name]
 		audio_player.autoplay = true
-		add_child(audio_player)
-		
-		# Limpiar después de reproducir
+		main.add_child(audio_player)
 		audio_player.finished.connect(_on_sound_finished.bind(audio_player))
-		
-		print("DJ: Reproduciendo sonido - ", sound_name)
-	else:
-		print("DJ: Sonido no encontrado - ", sound_name)
+		print("🔊 Sonido: ", sound_name)
 
-func _on_sound_finished(audio_player: AudioStreamPlayer) -> void:
+func _on_sound_finished(audio_player: AudioStreamPlayer2D) -> void:
 	audio_player.queue_free()

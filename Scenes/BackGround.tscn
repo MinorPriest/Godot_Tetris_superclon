@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dyyp1vjytt7bc"]
 
-[ext_resource type="Texture2D" path="res://Assets/Backgrounds/Galaga.jpg" id="1_nwjp1"]
+[ext_resource type="Texture2D" uid="uid://xxvben4kokop" path="res://Assets/Backgrounds/Pacman.jpg" id="1_nwjp1"]
 [ext_resource type="Script" uid="uid://cnn2mpo6glyx" path="res://Scripts/Main/Background.gd" id="2_nwjp1"]
 
 [node name="BackGround" type="Sprite2D"]

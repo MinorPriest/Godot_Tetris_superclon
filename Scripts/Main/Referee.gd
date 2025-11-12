@@ -17,8 +17,14 @@ var dj
 
 # Variables del referee
 var game_time: float = 0.0
-var is_timer_running: bool = true
+var is_timer_running: bool = false
 var game_paused: bool = false
+
+# 🆕 VARIABLES PARA CONTROLAR PIEZAS INICIALES
+var initial_pieces_placed: bool = false
+var p1_initial_count: int = 0
+var p2_initial_count: int = 0
+const INITIAL_PIECES_REQUIRED: int = 10
 
 # Constantes
 const POINTS_PER_CHARGE: int = 150
@@ -33,6 +39,12 @@ func initialize(main_node, piece_logic_node, hud_node, dj_node) -> void:
 
 func setup_game() -> void:
 	print("🎮 Referee: INICIANDO CONFIGURACIÓN DEL JUEGO...")
+	
+	# 🆕 RESETEAR CONTADORES DE PIEZAS INICIALES
+	p1_initial_count = 0
+	p2_initial_count = 0
+	initial_pieces_placed = false
+	is_timer_running = false  # ← ASEGURAR QUE ESTÉ EN FALSE
 	
 	if piece_logic and piece_logic.has_method("setup_initial_pieces"):
 		piece_logic.setup_initial_pieces()
@@ -59,11 +71,12 @@ func setup_game() -> void:
 	if main and main.has_method("set_setup_phase"):
 		main.set_setup_phase(true)
 	
-	print("🎮 Referee: CONFIGURACIÓN COMPLETADA")
+	print("🎮 Referee: CONFIGURACIÓN COMPLETADA - ESPERANDO PIEZAS INICIALES")
 	
 	# Configurar estado inicial del HUD
 	update_all_hud_displays()
-# DESCONGELAR AUTOMÁTICAMENTE después de 3 segundos (como fallback)
+	
+	# DESCONGELAR AUTOMÁTICAMENTE después de 3 segundos (como fallback)
 	await get_tree().create_timer(3.0).timeout
 	if game_paused:  # Solo si todavía está congelado
 		print("🕒 Referee: Descongelamiento automático después de setup")
@@ -76,14 +89,13 @@ func update(delta: float) -> void:
 		game_time += delta
 		time_updated.emit(game_time)
 
-
 	# Verificar inputs de ataque (SOLO UNA VEZ)
 	check_attack_inputs()
 
 func check_attack_inputs() -> void:
 	# NO PROCESAR INPUTS SI EL JUEGO ESTÁ TERMINADO - VERIFICACIÓN MÁS ESTRICTA
 	if game_paused or not is_timer_running or (main and main.game_paused):
-		print("⏸️  Juego terminado - saltando inputs de ataque")
+		#print("⏸️  Juego terminado - saltando inputs de ataque")
 		return
 	
 	#print("🎯 Referee.check_attack_inputs() - Frame: ", Engine.get_frames_drawn())
@@ -198,7 +210,6 @@ func check_initial_pieces_win_condition() -> void:
 	# Emitir actualización de piezas iniciales
 	initial_pieces_updated.emit(p1_cleared, p2_cleared)
 	
-	
 	# Verificar condiciones de victoria o empate
 	if p1_cleared >= 10 and p2_cleared >= 10:
 		print("🎉 EMPATE - Ambos limpiaron las 10 piezas iniciales!")
@@ -223,7 +234,6 @@ func check_initial_pieces_win_condition() -> void:
 			
 		freeze_game_completely()
 
-
 func freeze_game_completely() -> void:
 	print("❄️❄️❄️ CONGELANDO JUEGO COMPLETAMENTE - AMBOS JUGADORES")
 	is_timer_running = false
@@ -244,24 +254,59 @@ func freeze_game_completely() -> void:
 	
 	print("✅ JUEGO COMPLETAMENTE CONGELADO - NINGÚN JUGADOR PUEDE MOVERSE")
 
-
 func _on_initial_pieces_updated(_p1_cleared: int, _p2_cleared: int) -> void:
 	check_initial_pieces_win_condition()
-	
-
-
 
 # === Manejo de piezas colocadas ===
-func _on_piece_landed(_player) -> void:
+func _on_piece_landed(player) -> void:
+	# 🆕 SOLO CONTAR si estamos en fase de setup y no hemos terminado
+	if not initial_pieces_placed and main and main.is_setup_phase:
+		if player == get_p1():
+			p1_initial_count += 1
+			print("📊 P1 pieza inicial colocada: ", p1_initial_count, "/", INITIAL_PIECES_REQUIRED)
+		elif player == get_p2():
+			p2_initial_count += 1
+			print("📊 P2 pieza inicial colocada: ", p2_initial_count, "/", INITIAL_PIECES_REQUIRED)
+		
+		# Verificar si ambos jugadores han colocado las 10 piezas iniciales
+		check_initial_pieces_completion()
+	
+	# Reproducir sonido normal (siempre)
 	if dj and dj.has_method("play_sound"):
 		dj.play_sound("piece_land")
 	
-	# Verificar si el juego debería terminar por tablero lleno
-	check_board_full_condition()
+	# 🆕 SOLO verificar game over si NO estamos en setup
+	if not main.is_setup_phase:
+		check_board_full_condition()
 
 func _on_attack_piece_landed(_player) -> void:
 	if dj and dj.has_method("play_sound"):
 		dj.play_sound("attack_land")
+
+# 🆕 NUEVO MÉTODO: Verificar si se completaron las piezas iniciales
+func check_initial_pieces_completion() -> void:
+	if p1_initial_count >= INITIAL_PIECES_REQUIRED and p2_initial_count >= INITIAL_PIECES_REQUIRED:
+		print("🎉🎉🎉 ¡TODAS LAS PIEZAS INICIALES COLOCADAS! 🎉🎉🎉")
+		print("P1: ", p1_initial_count, " | P2: ", p2_initial_count)
+		
+		initial_pieces_placed = true
+		start_game_timer()  # ← INICIAR TIMER SOLO AQUÍ
+		
+		# Descongelar el juego
+		freeze_game(false)
+		
+		# Actualizar fase de setup en main
+		if main and main.has_method("set_setup_phase"):
+			main.set_setup_phase(false)
+
+# 🆕 NUEVO MÉTODO: Iniciar el contador del juego
+func start_game_timer() -> void:
+	is_timer_running = true
+	game_time = 0.0  # Reiniciar el tiempo
+	print("⏰ CONTADOR INICIADO - ¡Que comience el juego!")
+	
+	if dj and dj.has_method("play_sound"):
+		dj.play_sound("game_start")
 
 func check_board_full_condition() -> void:
 	if not piece_logic or not piece_logic.has_method("get_p1") or not piece_logic.has_method("get_p2"):
@@ -301,7 +346,6 @@ func check_board_full_condition() -> void:
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_win")
 		freeze_game_completely()
-
 
 func is_board_full(player) -> bool:
 	var spawn_positions = []
@@ -359,23 +403,26 @@ func debug_player_status() -> void:
 func restart_game() -> void:
 	print("DEBUG: Reiniciando juego")
 	
+	# Reiniciar estado del referee
+	game_time = 0.0
+	is_timer_running = false  # ← CAMBIAR A FALSE
+	game_paused = false
+	initial_pieces_placed = false
+	p1_initial_count = 0
+	p2_initial_count = 0
+	
 	# Reiniciar lógica de piezas
 	if piece_logic and piece_logic.has_method("restart_game"):
 		piece_logic.restart_game()
 	
-	# Reiniciar estado del referee
-	game_time = 0.0
-	is_timer_running = true
-	game_paused = false
-	
-	# Descongelar jugadores
-	freeze_game(false)
+	# 🆕 CONFIGURAR EL JUEGO DE NUEVO (esto reiniciará las piezas iniciales)
+	setup_game()
 	
 	# Actualizar HUD
 	update_all_hud_displays()
+	
 	if dj and dj.has_method("play_sound"):
 		dj.play_sound("game_start")
-	
 
 func update_all_hud_displays() -> void:
 	if not piece_logic or not piece_logic.has_method("get_p1") or not piece_logic.has_method("get_p2"):

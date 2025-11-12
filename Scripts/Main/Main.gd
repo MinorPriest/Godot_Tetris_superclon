@@ -44,6 +44,9 @@ func set_game_over(over: bool) -> void:
 		# Detener completamente las actualizaciones de física
 		set_physics_process(false)
 		print("🚨 JUEGO TERMINADO - Todas las actualizaciones detenidas")
+		# Detener música a través del DJ
+	if dj and dj.has_method("stop_background_music"):
+		dj.stop_background_music()
 
 func initialize_modules() -> void:
 	# Configurar referencias a los módulos
@@ -251,7 +254,7 @@ func _physics_process(delta: float) -> void:
 	
 	# NO ACTUALIZAR SI EL JUEGO ESTÁ TERMINADO (pero permitir durante setup)
 	if game_paused and not is_setup_phase:
-		print("⏸️  Juego pausado - saltando actualizaciones")
+		#print("⏸️  Juego pausado - saltando actualizaciones")
 		return
 	
 	# ACTUALIZAR SIEMPRE

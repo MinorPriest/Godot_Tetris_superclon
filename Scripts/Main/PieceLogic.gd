@@ -145,7 +145,7 @@ var is_setup_phase: bool = true
 var initial_piece_fall_timer: float = 0.0
 var current_initial_piece_index: int = 0
 const INITIAL_PIECE_FALL_INTERVAL: float = 0.3
-const INITIAL_PIECE_FALL_SPEED: float = 0.05
+const INITIAL_PIECE_FALL_SPEED: float = 0.02
 
 # === Variables para el control de piezas iniciales ===
 var current_initial_piece_data: Array = []
@@ -821,6 +821,12 @@ func land_initial_piece_both() -> void:
 	
 	clear_initial_piece_both()
 	
+	# 🆕 CRÍTICO: EMITIR SEÑAL DE PIEZA COLOCADA PARA AMBOS JUGADORES
+	if has_signal("piece_landed"):
+		emit_signal("piece_landed", p1)
+		emit_signal("piece_landed", p2)
+		print("📤 Señales piece_landed emitidas para pieza inicial ", current_initial_piece_index + 1)
+	
 	check_and_clear_matches_p1()
 	check_and_clear_matches_p2()
 	
@@ -831,7 +837,6 @@ func land_initial_piece_both() -> void:
 	var p1_cleared = get_initial_pieces_cleared(p1)
 	var p2_cleared = get_initial_pieces_cleared(p2)
 	initial_pieces_updated.emit(p1_cleared, p2_cleared)
-
 # === Sistema de iluminación constante para piezas iniciales ===
 func update_initial_pieces_blink(delta: float) -> void:
 	if is_setup_phase:
@@ -1412,8 +1417,8 @@ func get_initial_pieces_cleared(player: Player) -> int:
 	var cleared_pieces = int(cleared_blocks / 2.0)
 	cleared_pieces = min(cleared_pieces, 10)
 	
-	print("DEBUG: Piezas iniciales limpias - Jugador: ", "P1" if player == p1 else "P2", 
-		  " - Bloques: ", cleared_blocks, "/20 - Piezas: ", cleared_pieces, "/10")
+	#print("DEBUG: Piezas iniciales limpias - Jugador: ", "P1" if player == p1 else "P2", 
+		  #" - Bloques: ", cleared_blocks, "/20 - Piezas: ", cleared_pieces, "/10")
 	
 	return cleared_pieces
 
