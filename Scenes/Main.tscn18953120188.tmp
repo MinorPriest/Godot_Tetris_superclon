@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://c47xgu37qrswu"]
+[gd_scene load_steps=15 format=4 uid="uid://c47xgu37qrswu"]
 
 [ext_resource type="Script" uid="uid://1ia18xr36gqt" path="res://Scripts/Main/Main.gd" id="1_idj7w"]
 [ext_resource type="Texture2D" uid="uid://ddf057npck82f" path="res://Assets/tetrominoes.png" id="2_kln2b"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://kpgho657etvh" path="res://Scripts/Main/PieceLogic.gd" id="2_v1gob"]
 [ext_resource type="Script" uid="uid://bksf37o20ukod" path="res://Scripts/Main/Referee.gd" id="3_jw32o"]
 [ext_resource type="Script" uid="uid://dnawqhup7wf12" path="res://Scripts/Main/DJ.gd" id="5_v1gob"]
-[ext_resource type="PackedScene" uid="uid://dyyp1vjytt7bc" path="res://Scenes/BackGround.tscn" id="7_jw32o"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gw17c"]
 texture = ExtResource("2_kln2b")
@@ -99,5 +98,3 @@ script = ExtResource("3_jw32o")
 
 [node name="DJ" type="Node" parent="."]
 script = ExtResource("5_v1gob")
-
-[node name="BackGround" parent="." instance=ExtResource("7_jw32o")]

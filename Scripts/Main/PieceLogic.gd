@@ -7,7 +7,8 @@ signal board_changed(player)
 signal attack_piece_landed(player)
 signal initial_pieces_updated(p1_cleared, p2_cleared)
 signal setup_phase_finished()  # ← NUEVA SEÑAL
-
+signal next_piece_updated(player_id: String, next_piece)
+signal next_piece_index(player_id: String, piece_index: int)
 # Clase Player
 class Player:
 	var board_layer: TileMapLayer
@@ -50,7 +51,7 @@ var p1_board: TileMapLayer
 var p1_active: TileMapLayer  
 var p2_board: TileMapLayer
 var p2_active: TileMapLayer
-
+var spawn_vfx_scene: PackedScene
 # Jugadores
 var p1: Player
 var p2: Player
@@ -173,6 +174,11 @@ var is_p1_falling_attack: bool = false
 var current_attack_piece_p1: Array = []
 var current_attack_position_p1: Vector2i
 
+func _ready():
+	# Cargar la escena SpawnVFX
+	spawn_vfx_scene = preload("res://Scenes/SpawnVFX.tscn")
+	print("✅ PieceLogic _ready() - SpawnVFX cargado")
+	
 func initialize(main_node, p1_b, p1_a, p2_b, p2_a) -> void:
 	main = main_node
 	p1_board = p1_b
@@ -185,6 +191,23 @@ func initialize(main_node, p1_b, p1_a, p2_b, p2_a) -> void:
 	p2 = Player.new(p2_board, p2_active, 0, START_POSITION_P2)
 	
 	print("PieceLogic inicializado - P1 y P2 creados")
+
+	# --- NUEVO BLOQUE: Inicializar las piezas siguientes ---
+	if has_method("get_next_piece_for_player"):
+		p1.next_tetromino_type = get_next_piece_for_player(p1)
+		p2.next_tetromino_type = get_next_piece_for_player(p2)
+		print("✅ Próximas piezas inicializadas para ambos jugadores")
+
+		# Emitir señales para que el HUD actualice el preview
+		if has_signal("next_piece_updated"):
+			next_piece_updated.emit("P1", p1.next_tetromino_type)
+			next_piece_updated.emit("P2", p2.next_tetromino_type)
+			print("✅ Señales de preview emitidas al HUD")
+		else:
+			print("⚠️ No se encontró la señal 'next_piece_updated' en PieceLogic")
+	else:
+		print("⚠️ No existe get_next_piece_for_player(), no se pudo inicializar preview")
+
 
 func update(delta: float) -> void:
 	# SOLO NO ACTUALIZAR SI ESTAMOS EN FASE DE SETUP Y EL JUEGO ESTÁ PAUSADO
@@ -897,7 +920,7 @@ func render_tetromino(player: Player) -> void:
 		var atlas_coords = Vector2i(color_index, 0)
 		active_layer.set_cell(block_pos, tile_id, atlas_coords)
 	
-	print("DEBUG: Tetromino renderizado en posición: ", player.current_position)
+	#print("DEBUG: Tetromino renderizado en posición: ", player.current_position)
 
 func clear_tetromino(player: Player) -> void:
 	if player.tetromino_type == null or player.tetromino_type.is_empty():
@@ -921,7 +944,7 @@ func move_tetromino(player: Player, direction: Vector2i) -> void:
 		clear_tetromino(player)
 		player.current_position += direction
 		render_tetromino(player)
-		print("DEBUG: Jugador movido: ", direction)
+		#print("DEBUG: Jugador movido: ", direction)
 
 func rotate_tetromino(player: Player) -> void:
 	if player.is_frozen or (main and main.game_paused):
@@ -1219,18 +1242,32 @@ func apply_gravity_p1() -> void:
 
 func apply_gravity_p2() -> void:
 	apply_gravity_improved(p2, 26, 35)
-
+	
+func create_spawn_vfx(player: Player, positions: Array) -> void:
+	for block_pos in positions:
+		var vfx = spawn_vfx_scene.instantiate()
+		
+		# Convertir posición de tile a posición global
+		var global_pos = player.board_layer.to_global(
+			player.board_layer.map_to_local(block_pos)
+		)
+		vfx.position = global_pos
+		
+		# Agregar al árbol para que se reproduzca
+		get_tree().current_scene.add_child(vfx)
+		print("✨ SpawnVFX creado en: ", block_pos)
 # === FUNCIONES CRÍTICAS CORREGIDAS: Spawn de piezas con verificación de ataques ===
+# === Sistema de Spawn con señales de preview ===
 func spawn_next_tetromino_p1() -> void:
 	print("DEBUG: spawn_next_tetromino_p1 - Verificando ataques de P2: ", p2.pending_attacks.size())
 	
 	# VERIFICACIÓN CRÍTICA: Si P2 tiene ataques pendientes contra P1
 	if p2.pending_attacks.size() > 0:
 		print("DEBUG: P1 congelado - ejecutando ataque pendiente de P2")
-		_on_freeze_player(p1, true)   # Congelar a P1 (el objetivo)
-		_on_freeze_player(p2, false)  # Descongelar a P2 (el atacante)
-		execute_next_attack_p1()      # Ejecutar el ataque
-		return  # IMPORTANTE: No spawnear nueva pieza aún
+		_on_freeze_player(p1, true)
+		_on_freeze_player(p2, false)
+		execute_next_attack_p1()
+		return
 	
 	# Si no hay ataques, spawnear pieza normal
 	var next_piece = get_next_piece_for_player(p1)
@@ -1246,8 +1283,29 @@ func spawn_next_tetromino_p1() -> void:
 		p1.is_active = false
 		print("DEBUG: P1 - GAME OVER - No hay espacio para nueva pieza")
 	else:
+		# ✅ PRIMERO: Crear VFX
+		var spawn_positions = []
+		var rotation_data = p1.tetromino_type[p1.rotation_index]
+		for i in range(2):
+			var block_pos = p1.current_position + rotation_data[i]
+			spawn_positions.append(block_pos)
+		create_spawn_vfx(p1, spawn_positions)
+		
+		# ✅ SEGUNDO: Esperar a que el VFX se reproduzca
+		await get_tree().create_timer(0.3).timeout  # 300ms de delay
+		
+		# ✅ TERCERO: Renderizar la pieza después del delay
 		render_tetromino(p1)
-		print("DEBUG: P1 - Nueva pieza spawneda. Índice: ", p1.piece_index)
+		
+		print("DEBUG: P1 - Nueva pieza spawneda. Índice actual: ", p1.piece_index)
+	
+	# --- CORREGIDO: Enviar el índice de la PRÓXIMA pieza (no la siguiente-siguiente) ---
+	var preview_index = (p1.piece_index - 1) % shared_piece_sequence.size()
+	if preview_index < 0:
+		preview_index = shared_piece_sequence.size() - 1
+	
+	next_piece_index.emit("P1", preview_index)
+	print("✅ Preview P1 - Índice: ", preview_index, " | Pieza actual: ", p1.piece_index)
 
 func spawn_next_tetromino_p2() -> void:
 	print("DEBUG: spawn_next_tetromino_p2 - Verificando ataques de P1: ", p1.pending_attacks.size())
@@ -1255,10 +1313,10 @@ func spawn_next_tetromino_p2() -> void:
 	# VERIFICACIÓN CRÍTICA: Si P1 tiene ataques pendientes contra P2
 	if p1.pending_attacks.size() > 0:
 		print("DEBUG: P2 congelado - ejecutando ataque pendiente de P1")
-		_on_freeze_player(p2, true)   # Congelar a P2 (el objetivo)
-		_on_freeze_player(p1, false)  # Descongelar a P1 (el atacante)
-		execute_next_attack_p2()      # Ejecutar el ataque
-		return  # IMPORTANTE: No spawnear nueva pieza aún
+		_on_freeze_player(p2, true)
+		_on_freeze_player(p1, false)
+		execute_next_attack_p2()
+		return
 	
 	# Si no hay ataques, spawnear pieza normal
 	var next_piece = get_next_piece_for_player(p2)
@@ -1274,8 +1332,29 @@ func spawn_next_tetromino_p2() -> void:
 		p2.is_active = false
 		print("DEBUG: P2 - GAME OVER - No hay espacio para nueva pieza")
 	else:
+		# ✅ PRIMERO: Crear VFX
+		var spawn_positions = []
+		var rotation_data = p2.tetromino_type[p2.rotation_index]
+		for i in range(2):
+			var block_pos = p2.current_position + rotation_data[i]
+			spawn_positions.append(block_pos)
+		create_spawn_vfx(p2, spawn_positions)
+		
+		# ✅ SEGUNDO: Esperar a que el VFX se reproduzca
+		await get_tree().create_timer(0.3).timeout  # 300ms de delay
+		
+		# ✅ TERCERO: Renderizar la pieza después del delay
 		render_tetromino(p2)
-		print("DEBUG: P2 - Nueva pieza spawneda. Índice: ", p2.piece_index)
+		
+		print("DEBUG: P2 - Nueva pieza spawneda. Índice actual: ", p2.piece_index)
+	
+	# --- CORREGIDO: Enviar el índice de la PRÓXIMA pieza ---
+	var preview_index = (p2.piece_index - 1) % shared_piece_sequence.size()
+	if preview_index < 0:
+		preview_index = shared_piece_sequence.size() - 1
+	
+	next_piece_index.emit("P2", preview_index)
+	print("✅ Preview P2 - Índice: ", preview_index, " | Pieza actual: ", p2.piece_index)
 
 func clear_board_p1() -> void:
 	for y in range(1, 20):
@@ -1387,6 +1466,8 @@ func process_attacks(delta: float) -> void:
 func execute_next_attack_p1() -> void:
 	if p2.pending_attacks.size() > 0:
 		var attack_side = p2.pending_attacks.pop_front()
+		ScreenShakeManager.attack_shake()
+		attack_piece_landed.emit(p1)
 		print("DEBUG: execute_next_attack_p1 - Ejecutando ataque de P2: ", attack_side)
 		start_attack_on_p1(attack_side)
 	else:
@@ -1399,6 +1480,8 @@ func execute_next_attack_p1() -> void:
 func execute_next_attack_p2() -> void:
 	if p1.pending_attacks.size() > 0:
 		var attack_side = p1.pending_attacks.pop_front()
+		ScreenShakeManager.attack_shake()
+		attack_piece_landed.emit(p2)
 		print("DEBUG: execute_next_attack_p2 - Ejecutando ataque de P1: ", attack_side)
 		start_attack_on_p2(attack_side)
 	else:
@@ -1500,7 +1583,7 @@ func land_attack_piece() -> void:
 	current_attack_piece = []
 	is_p2_falling_attack = false
 	
-	attack_piece_landed.emit(p2)
+	
 	
 	# VERIFICAR SI HAY MÁS ATAQUES PENDIENTES
 	if p1.pending_attacks.size() > 0:
@@ -1604,7 +1687,7 @@ func land_attack_piece_p1() -> void:
 	current_attack_piece_p1 = []
 	is_p1_falling_attack = false
 	
-	attack_piece_landed.emit(p1)
+	
 	
 	# VERIFICAR SI HAY MÁS ATAQUES PENDIENTES
 	if p2.pending_attacks.size() > 0:

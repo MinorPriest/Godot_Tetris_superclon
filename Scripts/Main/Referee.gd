@@ -68,8 +68,9 @@ func setup_game() -> void:
 	if game_paused:  # Solo si todavía está congelado
 		print("🕒 Referee: Descongelamiento automático después de setup")
 		freeze_game(false)
+
 func update(delta: float) -> void:
-	print("🔄 Referee.update() llamado - game_paused: ", game_paused, " | is_timer_running: ", is_timer_running)
+	#print("🔄 Referee.update() llamado - game_paused: ", game_paused, " | is_timer_running: ", is_timer_running)
 	
 	if is_timer_running and not game_paused:
 		game_time += delta
@@ -85,7 +86,7 @@ func check_attack_inputs() -> void:
 		print("⏸️  Juego terminado - saltando inputs de ataque")
 		return
 	
-	print("🎯 Referee.check_attack_inputs() - Frame: ", Engine.get_frames_drawn())
+	#print("🎯 Referee.check_attack_inputs() - Frame: ", Engine.get_frames_drawn())
 	
 	if not piece_logic:
 		print("❌ piece_logic es null")
@@ -98,7 +99,7 @@ func check_attack_inputs() -> void:
 		print("❌ p1 o p2 son null")
 		return
 	
-	print("🎯 Cargas disponibles - P1: ", p1.charges, " | P2: ", p2.charges)
+	#print("🎯 Cargas disponibles - P1: ", p1.charges, " | P2: ", p2.charges)
 	
 	# VERIFICACIÓN DIRECTA SIN CONDICIONES (solo para debug)
 	if Input.is_action_just_pressed("p1_attack_left"):
@@ -142,18 +143,18 @@ func check_attack_inputs() -> void:
 
 # === Manejo de matches ===
 func _on_match_found(player, _matched_positions: Array, points: int) -> void:
-	print("🎉🎉🎉 REFEREE: _on_match_found RECIBIDO!")
-	print("Jugador: ", "P1" if player == get_p1() else "P2")
-	print("Puntos recibidos: ", points)
-	print("Cargas actuales antes: ", player.charges)
-	print("Puntos de carga actuales antes: ", player.charge_points)
-	print("Score actual antes: ", player.display_score)
+	#print("🎉🎉🎉 REFEREE: _on_match_found RECIBIDO!")
+	#print("Jugador: ", "P1" if player == get_p1() else "P2")
+	#print("Puntos recibidos: ", points)
+	#print("Cargas actuales antes: ", player.charges)
+	#print("Puntos de carga actuales antes: ", player.charge_points)
+	#print("Score actual antes: ", player.display_score)
 	
 	add_points_to_charges(player, points)
 	
-	print("Cargas después: ", player.charges)
-	print("Puntos de carga después: ", player.charge_points)
-	print("Score después: ", player.display_score)
+	#print("Cargas después: ", player.charges)
+	#print("Puntos de carga después: ", player.charge_points)
+	#print("Score después: ", player.display_score)
 	
 	check_initial_pieces_win_condition()
 	if dj and dj.has_method("play_sound"):
@@ -197,26 +198,29 @@ func check_initial_pieces_win_condition() -> void:
 	# Emitir actualización de piezas iniciales
 	initial_pieces_updated.emit(p1_cleared, p2_cleared)
 	
+	
 	# Verificar condiciones de victoria o empate
 	if p1_cleared >= 10 and p2_cleared >= 10:
 		print("🎉 EMPATE - Ambos limpiaron las 10 piezas iniciales!")
-		game_over.emit("EMPATE!\nAmbos limpiaron las 10 piezas iniciales!")
+		game_over.emit("\nEMPATE!\n")
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_draw")
 		freeze_game_completely()
 		
 	elif p1_cleared >= 10:
 		print("🎉 P1 GANA - Limpió las 10 piezas iniciales primero!")
-		game_over.emit("JUGADOR 1 GANA!\nLimpió las 10 piezas iniciales primero!")
+		game_over.emit("\nJUGADOR 1 GANA!\n")
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_win")
+			
 		freeze_game_completely()
 		
 	elif p2_cleared >= 10:
 		print("🎉 P2 GANA - Limpió las 10 piezas iniciales primero!")
-		game_over.emit("JUGADOR 2 GANA!\nLimpió las 10 piezas iniciales primero!")
+		game_over.emit("\nJUGADOR 2 GANA!\n")
 		if dj and dj.has_method("play_sound"):
 			dj.play_sound("game_over_win")
+			
 		freeze_game_completely()
 
 
@@ -242,8 +246,8 @@ func freeze_game_completely() -> void:
 
 
 func _on_initial_pieces_updated(_p1_cleared: int, _p2_cleared: int) -> void:
-	# Este método es necesario para la conexión de señales
-	pass
+	check_initial_pieces_win_condition()
+	
 
 
 
@@ -369,9 +373,9 @@ func restart_game() -> void:
 	
 	# Actualizar HUD
 	update_all_hud_displays()
-	
 	if dj and dj.has_method("play_sound"):
 		dj.play_sound("game_start")
+	
 
 func update_all_hud_displays() -> void:
 	if not piece_logic or not piece_logic.has_method("get_p1") or not piece_logic.has_method("get_p2"):

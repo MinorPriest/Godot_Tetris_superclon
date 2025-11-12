@@ -39,6 +39,7 @@ func set_game_over(over: bool) -> void:
 	is_game_over = over
 	game_paused = over  # También pausar el juego
 	
+	
 	if over:
 		# Detener completamente las actualizaciones de física
 		set_physics_process(false)
@@ -130,7 +131,8 @@ func _on_setup_phase_finished():
 	print("🎉🎉🎉 MAIN: Fase de setup TERMINADA - Activando ataques 🎉🎉🎉")
 	is_setup_phase = false
 	game_paused = false
-	
+	if dj and dj.has_method("play_sound"):
+		dj.play_sound("game_start")
 	# También actualizar referee si es necesario
 	if referee and referee.has_method("_on_setup_phase_finished"):
 		referee._on_setup_phase_finished()
@@ -178,7 +180,8 @@ func connect_modules_signals() -> void:
 	# PieceLogic → HUD
 	_safe_connect(piece_logic, "board_changed", hud, "_on_board_changed")
 	_safe_connect(piece_logic, "initial_pieces_updated", hud, "_on_initial_pieces_updated")
-	
+	_safe_connect(piece_logic, "next_piece_updated", hud, "_on_next_piece_updated")
+
 	# Referee → PieceLogic
 	_safe_connect(referee, "freeze_all_players", piece_logic, "_on_freeze_all_players")
 	_safe_connect(referee, "add_attack", piece_logic, "_on_add_attack")
@@ -244,7 +247,7 @@ func _physics_process(delta: float) -> void:
 	if is_game_over:
 		return
 	
-	print("🔄 MAIN _physics_process - game_paused: ", game_paused, " | is_setup_phase: ", is_setup_phase)
+	#print("🔄 MAIN _physics_process - game_paused: ", game_paused, " | is_setup_phase: ", is_setup_phase)
 	
 	# NO ACTUALIZAR SI EL JUEGO ESTÁ TERMINADO (pero permitir durante setup)
 	if game_paused and not is_setup_phase:
@@ -254,13 +257,13 @@ func _physics_process(delta: float) -> void:
 	# ACTUALIZAR SIEMPRE
 	if referee and referee.has_method("update"):
 		referee.update(delta)
-		print("✅ Referee actualizado")
+		#print("✅ Referee actualizado")
 	else:
 		print("❌ Referee no se pudo actualizar")
 	
 	if piece_logic and piece_logic.has_method("update"):
 		piece_logic.update(delta)
-		print("✅ PieceLogic actualizado")
+		#print("✅ PieceLogic actualizado")
 	else:
 		print("❌ PieceLogic no se pudo actualizar")
 

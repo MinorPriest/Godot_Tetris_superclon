@@ -14,6 +14,10 @@ config/name="Tiles"
 run/main_scene="uid://c47xgu37qrswu"
 config/features=PackedStringArray("4.5", "Forward Plus")
 
+[autoload]
+
+ScreenShakeManager="*res://Scripts/Main/ScreenShakeManager.gd"
+
 [display]
 
 window/size/viewport_height=680
@@ -23,7 +27,8 @@ window/size/viewport_height=680
 folder_colors={
 "res://Assets/": "yellow",
 "res://Scenes/": "teal",
-"res://Scripts/": "purple"
+"res://Scripts/": "purple",
+"res://Sounds/": "pink"
 }
 
 [input]

@@ -11,14 +11,14 @@ func initialize(main_node) -> void:
 	
 	# Cargar recursos de sonido (ajusta las rutas según tu proyecto)
 	sound_resources = {
-		#"piece_land": preload("res://sounds/piece_land.wav"),
-		#"match": preload("res://sounds/match.wav"),
+		"piece_land": preload("res://sounds/piece_land.mp3"),
+		"match": preload("res://sounds/match.mp3"),
 		#"charge_gained": preload("res://sounds/charge_gained.wav"),
 		#"attack_launch": preload("res://sounds/attack_launch.wav"),
-		#"attack_land": preload("res://sounds/attack_land.wav"),
-		#"game_over_win": preload("res://sounds/game_over_win.wav"),
+		"attack_land": preload("res://sounds/attack_land.mp3"),
+		"game_over_win": preload("res://sounds/game_over_win.mp3"),
 		#"game_over_draw": preload("res://sounds/game_over_draw.wav"),
-		#"game_start": preload("res://sounds/game_start.wav"),
+		"game_start": preload("res://sounds/game_start.mp3"),
 		#"game_pause": preload("res://sounds/game_pause.wav"),
 		#"game_resume": preload("res://sounds/game_resume.wav")
 	}
