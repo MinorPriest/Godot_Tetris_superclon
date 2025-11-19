@@ -1,0 +1,263 @@
+[gd_scene load_steps=26 format=3 uid="uid://by657rjww0eqf"]
+
+[ext_resource type="Texture2D" uid="uid://bahqgo161yry7" path="res://Assets/Cover.png" id="1_gyv81"]
+[ext_resource type="Texture2D" uid="uid://cbokh8cw0h35r" path="res://Assets/Backgrounds/GalagaBackground.png" id="2_tdc4n"]
+[ext_resource type="Texture2D" uid="uid://dfmun83g2ytpa" path="res://Assets/Galaga_sprite.png" id="2_xv2ls"]
+
+[sub_resource type="Curve2D" id="Curve2D_6ytb2"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 273, 470, 0, 0, 0, 0, 273, 470, 0, 0, 0, 0, 529, 470, 0, 0, 0, 0, 529, 726, 0, 0, 0, 0, 273, 726, 0, 0, 0, 0, 273, 470)
+}
+point_count = 6
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tdc4n"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_73soe"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a7y0l"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(128, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pqjoh"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(192, 64, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sx5df"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tdc4n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_73soe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a7y0l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pqjoh")
+}],
+"loop": true,
+"name": &"Galaga",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_kyotx"]
+resource_name = "Galaga"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GalagaPathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5, 10),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.5, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_v26jb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GalagaPathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7tai4"]
+_data = {
+&"Galaga": SubResource("Animation_kyotx"),
+&"RESET": SubResource("Animation_v26jb")
+}
+
+[sub_resource type="Curve2D" id="Curve2D_tdc4n"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 448, 80, 0, 0, 0, 0, 512, 80, 0, 0, 0, 0, 576, 80, 0, 0, 0, 0, 640, 80, 0, 0, 0, 0, 704, 80)
+}
+point_count = 5
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sx5df"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ytb2"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kyotx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sx5df")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ytb2")
+}],
+"loop": true,
+"name": &"Invader",
+"speed": 2.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kyotx"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v26jb"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7tai4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kyotx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v26jb")
+}],
+"loop": true,
+"name": &"Invader2",
+"speed": 2.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7tai4"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x8p6v"]
+atlas = ExtResource("2_xv2ls")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5xlik"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7tai4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x8p6v")
+}],
+"loop": true,
+"name": &"Invader3",
+"speed": 2.0
+}]
+
+[sub_resource type="Animation" id="Animation_7tai4"]
+resource_name = "Invader"
+length = 8.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 3, 4, 5, 6, 7, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.25, 0.75, 1.0, 0.75, 0.5, 0.25, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_x8p6v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5xlik"]
+_data = {
+&"Invader": SubResource("Animation_7tai4"),
+&"RESET": SubResource("Animation_x8p6v")
+}
+
+[node name="GalagaScene" type="Node2D"]
+
+[node name="Cover" type="Sprite2D" parent="."]
+position = Vector2(575, 340)
+texture = ExtResource("1_gyv81")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(576, 339.99997)
+scale = Vector2(1.4588236, 1.1826087)
+texture = ExtResource("2_tdc4n")
+
+[node name="GalagaPath2D" type="Path2D" parent="."]
+position = Vector2(175, -150)
+curve = SubResource("Curve2D_6ytb2")
+
+[node name="GalagaPathFollow2D" type="PathFollow2D" parent="GalagaPath2D"]
+position = Vector2(272.8203, 470)
+skew = 0.017453292
+rotates = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="GalagaPath2D/GalagaPathFollow2D"]
+position = Vector2(0, -5)
+skew = -0.01745069
+sprite_frames = SubResource("SpriteFrames_sx5df")
+animation = &"Galaga"
+autoplay = "Galaga"
+frame_progress = 0.023640487
+speed_scale = 0.5
+
+[node name="GalagaAnimationPlayer" type="AnimationPlayer" parent="GalagaPath2D/GalagaPathFollow2D"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_7tai4")
+}
+autoplay = "Galaga"
+
+[node name="InvaderPath2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_tdc4n")
+
+[node name="InvaderPathFollow2D" type="PathFollow2D" parent="InvaderPath2D"]
+position = Vector2(448, 80)
+
+[node name="Invader1" type="AnimatedSprite2D" parent="InvaderPath2D/InvaderPathFollow2D"]
+sprite_frames = SubResource("SpriteFrames_kyotx")
+animation = &"Invader"
+autoplay = "Invader"
+frame_progress = 0.33553743
+
+[node name="Invader2" type="AnimatedSprite2D" parent="InvaderPath2D/InvaderPathFollow2D"]
+position = Vector2(35, 0)
+sprite_frames = SubResource("SpriteFrames_7tai4")
+animation = &"Invader2"
+autoplay = "Invader2"
+frame_progress = 0.4867053
+
+[node name="Invader3" type="AnimatedSprite2D" parent="InvaderPath2D/InvaderPathFollow2D"]
+position = Vector2(-35, 0)
+sprite_frames = SubResource("SpriteFrames_5xlik")
+animation = &"Invader3"
+autoplay = "Invader3"
+frame_progress = 0.92837423
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="InvaderPath2D/InvaderPathFollow2D"]
+libraries = {
+&"": SubResource("AnimationLibrary_5xlik")
+}
+autoplay = "Invader"

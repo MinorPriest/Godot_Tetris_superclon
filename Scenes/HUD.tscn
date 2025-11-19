@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://s2kmsbwd3bec"]
+[gd_scene load_steps=24 format=3 uid="uid://s2kmsbwd3bec"]
 
 [ext_resource type="FontFile" uid="uid://c7g7m08bx583g" path="res://Assets/Fonts/Fortzilla_Font_1_14/TrueType (.ttf)/Fortzilla-Regular.ttf" id="1_psnte"]
 [ext_resource type="Script" uid="uid://daidfnm2jmxj" path="res://Scripts/Main/HUD.gd" id="1_s3jbq"]
@@ -7,6 +7,8 @@
 [ext_resource type="FontFile" uid="uid://vqvpv1oxgbs3" path="res://Assets/Fonts/DigitTech_Font_1_0/Web Open Font Format (.woff)/DigitTech9-Regular.woff" id="3_psnte"]
 [ext_resource type="FontFile" uid="uid://cdi3vw72xn3pc" path="res://Assets/Fonts/Fortzilla_Font_1_14/OpenType (.otf)/Fortzilla-Italic.otf" id="6_g8s2e"]
 [ext_resource type="Script" uid="uid://c2ugqwopfgg1x" path="res://Scripts/Main/MainSceneCamera.gd" id="7_t385i"]
+[ext_resource type="PackedScene" uid="uid://cr4pelexn41g6" path="res://Scenes/P1AttackGauge.tscn" id="8_b5b84"]
+[ext_resource type="PackedScene" uid="uid://d1rvqovy3qu2f" path="res://Scenes/P2AttackGauge.tscn" id="9_fbb48"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nfm57"]
 atlas = ExtResource("2_c3eba")
@@ -387,3 +389,10 @@ text = "INICIAR PARTIDA"
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 340)
 script = ExtResource("7_t385i")
+
+[node name="P1AttackGauge" parent="." instance=ExtResource("8_b5b84")]
+z_index = 10
+position = Vector2(333, 335)
+
+[node name="P2AttackGauge" parent="." instance=ExtResource("9_fbb48")]
+z_index = 10

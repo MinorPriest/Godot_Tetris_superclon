@@ -29,17 +29,17 @@ func _process(delta):
 		# Reducir intensidad gradualmente
 		shake_intensity = lerp(shake_intensity, 0.0, shake_fade * delta)
 		
-		# Debug cada 5 frames - CORREGIDO
+		# Debug cada 5 frames - CORREGIDO: Eliminada la variable no usada
 		if Engine.get_frames_drawn() % 5 == 0:
-			var current_offset = cameras[0].offset if cameras.size() > 0 else Vector2.ZERO
-			print("🎬 SHAKE ACTIVO - Dur: " + str(shake_duration) + ", Int: " + str(shake_intensity) + ", Offset: " + str(current_offset))
+			#print("🎬 SHAKE ACTIVO - Dur: " + str(shake_duration) + ", Int: " + str(shake_intensity))
+			pass
 			
 	elif shake_duration <= 0 and shake_intensity > 0:
 		# Restablecer offsets cuando termina el shake
 		for camera in cameras:
 			if is_instance_valid(camera):
 				camera.offset = Vector2.ZERO
-		print("🎬 SHAKE TERMINADO - Offset restablecido")
+		#print("🎬 SHAKE TERMINADO - Offset restablecido")
 		shake_intensity = 0.0
 
 # Registrar cámara

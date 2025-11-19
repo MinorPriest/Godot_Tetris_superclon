@@ -1,0 +1,125 @@
+[gd_scene load_steps=15 format=3 uid="uid://cr4pelexn41g6"]
+
+[ext_resource type="Texture2D" uid="uid://bbnynebtiwqsr" path="res://Assets/P1Attack_gauge.png" id="1_7us5s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqyib"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(352, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jgmbk"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(320, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7us5s"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(288, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rtl7p"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(256, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7x8s"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(224, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v4rq2"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(192, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xk3a"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(160, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cida6"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(128, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rhv1u"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(96, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_teghs"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(64, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oq3br"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(32, 0, 32, 672)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4gamk"]
+atlas = ExtResource("1_7us5s")
+region = Rect2(0, 0, 32, 672)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rtl7p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xqyib")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jgmbk")
+}],
+"loop": true,
+"name": &"Charge_0",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7us5s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rtl7p")
+}],
+"loop": true,
+"name": &"Charge_1",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t7x8s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v4rq2")
+}],
+"loop": true,
+"name": &"Charge_2",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xk3a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cida6")
+}],
+"loop": true,
+"name": &"Charge_3",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rhv1u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_teghs")
+}],
+"loop": true,
+"name": &"Charge_4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oq3br")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4gamk")
+}],
+"loop": true,
+"name": &"Charge_5",
+"speed": 6.0
+}]
+
+[node name="P1AttackGauge" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_rtl7p")
+animation = &"Charge_0"
+frame_progress = 0.486523

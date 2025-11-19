@@ -272,7 +272,7 @@ func register_piece(player: Player, positions: Array):
 	player.piece_relationships[piece_id] = positions.duplicate()
 	for pos in positions:
 		player.block_to_piece[pos] = piece_id
-	print("DEBUG: Pieza registrada ID ", piece_id, " en posiciones: ", positions)
+	#print("DEBUG: Pieza registrada ID ", piece_id, " en posiciones: ", positions)
 
 func unregister_piece_positions(player: Player, positions: Array):
 	for pos in positions:

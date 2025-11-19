@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://ekios00r8jai"]
+
+[ext_resource type="FontFile" uid="uid://f0wrkwcqg4jx" path="res://Assets/Fonts/Fortzilla_Font_1_14/OpenType (.otf)/Fortzilla-Regular.otf" id="1_mthaa"]
+[ext_resource type="Texture2D" uid="uid://8sj0v8c54rg2" path="res://Assets/P1vsP2_HUD_Sprite.png" id="2_akex1"]
+[ext_resource type="Texture2D" uid="uid://r0md0u18v416" path="res://Assets/P1_HUD_Sprite.png" id="3_373d8"]
+[ext_resource type="Texture2D" uid="uid://bxgf18n06wjua" path="res://Assets/Profiles_HUD_Sprite.png" id="4_akex1"]
+
+[node name="SelectionScene" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 680.0
+color = Color(0.096204735, 0.09620475, 0.096204735, 1)
+
+[node name="VS_Mode" type="Button" parent="."]
+offset_left = 448.0
+offset_top = 64.0
+offset_right = 704.0
+offset_bottom = 128.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("1_mthaa")
+text = "Multijugador Local"
+icon = ExtResource("2_akex1")
+
+[node name="CPU_Mode" type="Button" parent="."]
+offset_left = 448.0
+offset_top = 128.0
+offset_right = 704.0
+offset_bottom = 192.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("1_mthaa")
+text = "VS CPU"
+icon = ExtResource("3_373d8")
+
+[node name="Profiles" type="Button" parent="."]
+offset_left = 448.0
+offset_top = 192.0
+offset_right = 704.0
+offset_bottom = 256.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("1_mthaa")
+text = "Perfiles"
+icon = ExtResource("4_akex1")

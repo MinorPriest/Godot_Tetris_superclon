@@ -1,0 +1,119 @@
+[gd_scene load_steps=17 format=3 uid="uid://corjq0hqkub1y"]
+
+[ext_resource type="Texture2D" uid="uid://cosywdgib4uto" path="res://Assets/Backgrounds/ExciteBike_spritesheet.png" id="1_n4k6h"]
+[ext_resource type="Texture2D" uid="uid://begref85500lk" path="res://Assets/Backgrounds/ExciteBike_spritesheet2.png" id="2_gx717"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gx717"]
+atlas = ExtResource("1_n4k6h")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_17il7"]
+atlas = ExtResource("1_n4k6h")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_quj74"]
+atlas = ExtResource("1_n4k6h")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_37thp"]
+atlas = ExtResource("1_n4k6h")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s34fk"]
+atlas = ExtResource("1_n4k6h")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yr1xl"]
+atlas = ExtResource("1_n4k6h")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2fq1o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx717")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_17il7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_quj74")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_37thp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s34fk")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_yr1xl")
+}],
+"loop": true,
+"name": &"ExciteBiker",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2fq1o"]
+atlas = ExtResource("2_gx717")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tg6gw"]
+atlas = ExtResource("2_gx717")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gyv8g"]
+atlas = ExtResource("2_gx717")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_clru3"]
+atlas = ExtResource("2_gx717")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xjpnh"]
+atlas = ExtResource("2_gx717")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxi0f"]
+atlas = ExtResource("2_gx717")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ac5a5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2fq1o")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_tg6gw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gyv8g")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_clru3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xjpnh")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_qxi0f")
+}],
+"loop": true,
+"name": &"ExciteBiker2",
+"speed": 5.0
+}]
+
+[node name="ExciteBikeScene" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(500, 340)
+sprite_frames = SubResource("SpriteFrames_2fq1o")
+animation = &"ExciteBiker"
+autoplay = "ExciteBiker"
+frame_progress = 0.36894554
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+position = Vector2(600, 340)
+sprite_frames = SubResource("SpriteFrames_ac5a5")
+animation = &"ExciteBiker2"
+autoplay = "ExciteBiker2"

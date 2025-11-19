@@ -8,12 +8,12 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	animated_sprite.process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	print("🎬 SpawnVFX iniciado (PROCESS_MODE_ALWAYS)")
+	#print("🎬 SpawnVFX iniciado (PROCESS_MODE_ALWAYS)")
 	animated_sprite.play("SpawnVFX")
 	animated_sprite.animation_finished.connect(_on_animation_finished)
 
 func _on_animation_finished():
-	print("✅ SpawnVFX animación COMPLETADA")
+	#print("✅ SpawnVFX animación COMPLETADA")
 	
 	# ✅ OCULTAR el sprite antes de destruir
 	animated_sprite.visible = false
