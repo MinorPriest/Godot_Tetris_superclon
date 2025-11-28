@@ -165,6 +165,8 @@ var cache_dirty_p2: bool = true
 # === Sistema de grupos de piezas ===
 var piece_groups_p1: Array = []
 var piece_groups_p2: Array = []
+# === NUEVA VARIABLE: Control de pausa del juego ===
+var game_paused: bool = false
 
 # === Control del juego ===
 var is_p2_falling_attack: bool = false
@@ -173,6 +175,7 @@ var current_attack_position: Vector2i
 var is_p1_falling_attack: bool = false
 var current_attack_piece_p1: Array = []
 var current_attack_position_p1: Vector2i
+
 
 func _ready():
 	# Cargar la escena SpawnVFX
@@ -262,7 +265,7 @@ func handle_player_input(player: Player, player_prefix: String) -> void:
 	if Input.is_action_just_pressed(player_prefix + "_right"):
 		move_tetromino(player, Vector2i.RIGHT)
 	
-	if Input.is_action_just_pressed(player_prefix + "_rotate"):
+	if Input.is_action_just_pressed(player_prefix + "_rotate") or Input.is_action_just_pressed(player_prefix + "_accept"):
 		rotate_tetromino(player)
 
 # === SISTEMA DE REGISTRO DE PIEZAS ===
@@ -877,11 +880,12 @@ func _on_freeze_player(player: Player, freeze: bool) -> void:
 func _on_freeze_all_players(freeze: bool) -> void:
 	p1.is_frozen = freeze
 	p2.is_frozen = freeze
+	game_paused = freeze  # ← AGREGAR ESTA LÍNEA
+	
 	if freeze:
 		print("🧊 PieceLogic: Juego congelado completamente")
 	else:
 		print("▶️ PieceLogic: Juego reanudado")
-	
 # === P1 - FUNCIONES ESPECÍFICAS ===
 func start_new_game_p1() -> void:
 	p1.display_score = 0
@@ -1714,3 +1718,86 @@ func get_p2() -> Player:
 # === Función auxiliar para encontrar piezas completas ===
 func find_complete_pieces(_player: Player) -> Array:
 	return []
+# === NUEVAS FUNCIONES PARA REINICIO ===
+
+func cleanup():
+	print("🧹 PIECELOGIC: Limpieza completa iniciada")
+	
+	# Resetear estados
+	current_initial_piece_index = 0
+	is_setup_phase = true
+	is_initial_piece_falling = false
+	game_paused = false  # ← AGREGAR ESTA LÍNEA
+	
+	# Limpiar tableros
+	cleanup_boards()
+	
+	# Resetear jugadores
+	if p1:
+		p1.is_active = true
+		p1.is_frozen = false
+		p1.display_score = 0
+		p1.charge_score = 0
+		p1.charges = 0
+		p1.charge_points = 0
+		p1.pending_attacks.clear()
+		p1.fall_timer = 0.0
+	
+	if p2:
+		p2.is_active = true
+		p2.is_frozen = false
+		p2.display_score = 0
+		p2.charge_score = 0
+		p2.charges = 0
+		p2.charge_points = 0
+		p2.pending_attacks.clear()
+		p2.fall_timer = 0.0
+
+func cleanup_boards():
+	print("🧹 PIECELOGIC: Limpiando tableros completamente")
+	
+	# Limpiar P1
+	for x in range(1, 10):
+		for y in range(1, 20):
+			var pos = Vector2i(x, y)
+			p1_board.erase_cell(pos)
+			p1_active.erase_cell(pos)
+	
+	# Limpiar P2
+	for x in range(26, 35):
+		for y in range(1, 20):
+			var pos = Vector2i(x, y)
+			p2_board.erase_cell(pos)
+			p2_active.erase_cell(pos)
+	
+	# Limpiar estructuras de datos
+	if p1:
+		p1.board_colors.clear()
+		p1.initial_pieces_positions.clear()
+		p1.piece_relationships.clear()
+		p1.block_to_piece.clear()
+		p1.next_piece_id = 0
+		p1.piece_index = 0
+	
+	if p2:
+		p2.board_colors.clear()
+		p2.initial_pieces_positions.clear()
+		p2.piece_relationships.clear()
+		p2.block_to_piece.clear()
+		p2.next_piece_id = 0
+		p2.piece_index = 0
+	
+	print("✅ PIECELOGIC: Tableros limpiados completamente")
+
+# Modificar la función restart existente para usar cleanup
+func restart():
+	print("🔄 PIECELOGIC: Reinicio iniciado")
+	cleanup()
+	
+	# Configurar juego nuevo
+	setup_initial_pieces()
+	setup_shared_sequence()
+	select_random_preset()
+	setup_preset_positions()
+	
+	print("✅ PIECELOGIC: Reinicio completado")

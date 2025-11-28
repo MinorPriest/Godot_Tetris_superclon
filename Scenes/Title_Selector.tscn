@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://dttn6633sevf5"]
+
+[ext_resource type="Texture2D" uid="uid://4b2xk276tkvb" path="res://Assets/Puzzle_Mayhem7.png" id="1_2hcs2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3iat"]
+atlas = ExtResource("1_2hcs2")
+region = Rect2(0, 0, 272, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qrvl8"]
+atlas = ExtResource("1_2hcs2")
+region = Rect2(0, 0, 272, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mol8p"]
+atlas = ExtResource("1_2hcs2")
+region = Rect2(272, 0, 272, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_emii6"]
+atlas = ExtResource("1_2hcs2")
+region = Rect2(544, 0, 272, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c5542"]
+atlas = ExtResource("1_2hcs2")
+region = Rect2(0, 0, 272, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c5542"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_r3iat")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qrvl8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mol8p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_emii6")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_c5542")
+}],
+"loop": true,
+"name": &"Selector",
+"speed": 6.0
+}]
+
+[node name="Title_Selector" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_c5542")
+animation = &"Selector"
+autoplay = "Selector"

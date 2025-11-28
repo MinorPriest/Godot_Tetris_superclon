@@ -1,311 +1,269 @@
+# ProfileManager.gd (Singleton/Autoload) - VERSIÓN CORREGIDA
 extends Node
-#
-## Señales
-#signal profile_loaded(profile_data)
-#signal profiles_updated()
-#signal match_recorded(winner_profile, loser_profile, winner_score, loser_score)
-#
-## Clase para datos del perfil
-#class_name PlayerProfile
-#
-#var profile_name: String
-#var matches_played: int = 0
-#var matches_won: int = 0
-#var matches_lost: int = 0
-#var total_score: int = 0
-#var highest_score: int = 0
-#var play_time: float = 0.0
-#var created_date: String
-#var last_played: String
-#var vs_records: Dictionary = {}  # {"Jose": {"won": 10, "lost": 5, "score_for": 50000, "score_against": 45000}}
-#
-#func _init(name: String):
-	#profile_name = name
-	#created_date = Time.get_date_string_from_system()
-	#last_played = created_date
-#
-#func get_win_rate() -> float:
-	#if matches_played == 0:
-		#return 0.0
-	#return float(matches_won) / float(matches_played) * 100.0
-#
-#func get_record_against(opponent: String) -> Dictionary:
-	#return vs_records.get(opponent, {"won": 0, "lost": 0, "score_for": 0, "score_against": 0})
-#
-## Variables globales
-#var profiles: Dictionary = {}
-#var current_profiles: Array[String] = ["", ""]  # [P1, P2]
-#var save_path: String = "user://profiles.save"
-#
-#func _ready():
-	#load_profiles()
-	#print("✅ ProfileManager inicializado - Perfiles cargados: ", profiles.size())
-#
-## === Gestión de Perfiles ===
-#func create_profile(profile_name: String) -> bool:
-	#if profile_name.strip_edges().is_empty():
-		#print("❌ Nombre de perfil vacío")
-		#return false
-	#
-	#if profiles.has(profile_name):
-		#print("❌ El perfil ya existe: ", profile_name)
-		#return false
-	#
-	#var new_profile = PlayerProfile.new(profile_name)
-	#profiles[profile_name] = new_profile
-	#save_profiles()
-	#
-	#print("✅ Perfil creado: ", profile_name)
-	#profiles_updated.emit()
-	#return true
-#
-#func delete_profile(profile_name: String) -> bool:
-	#if profiles.has(profile_name):
-		#profiles.erase(profile_name)
-		#save_profiles()
-		#
-		## Remover de perfiles actuales si estaban seleccionados
-		#for i in range(current_profiles.size()):
-			#if current_profiles[i] == profile_name:
-				#current_profiles[i] = ""
-		#
-		#print("✅ Perfil eliminado: ", profile_name)
-		#profiles_updated.emit()
-		#return true
-	#return false
-#
-#func get_profile(profile_name: String) -> PlayerProfile:
-	#return profiles.get(profile_name, null)
-#
-#func get_all_profiles() -> Array:
-	#return profiles.keys()
-#
-## === Gestión de Partida Actual ===
-#func set_player_profile(player_index: int, profile_name: String) -> bool:
-	#if player_index < 0 or player_index > 1:
-		#print("❌ Índice de jugador inválido: ", player_index)
-		#return false
-	#
-	#if profile_name.is_empty() or profiles.has(profile_name):
-		#current_profiles[player_index] = profile_name
-		#print("✅ Jugador ", player_index + 1, " asignado a perfil: ", profile_name)
-		#
-		#if not profile_name.is_empty():
-			#profile_loaded.emit(profiles[profile_name])
-		#
-		#return true
-	#
-	#print("❌ Perfil no encontrado: ", profile_name)
-	#return false
-#
-#func get_current_profile(player_index: int) -> PlayerProfile:
-	#if player_index < 0 or player_index > 1:
-		#return null
-	#
-	#var profile_name = current_profiles[player_index]
-	#if profile_name.is_empty():
-		#return null
-	#
-	#return profiles.get(profile_name, null)
-#
-## === Registro de Resultados ===
-#func record_match_result(p1_score: int, p2_score: int, game_duration: float) -> void:
-	#var p1_profile = get_current_profile(0)
-	#var p2_profile = get_current_profile(1)
-	#
-	#if not p1_profile or not p2_profile:
-		#print("❌ No se pueden registrar resultados - perfiles no asignados")
-		#return
-	#
-	## Determinar ganador y perdedor
-	#var winner_profile: PlayerProfile
-	#var loser_profile: PlayerProfile
-	#var winner_score: int
-	#var loser_score: int
-	#
-	#if p1_score > p2_score:
-		#winner_profile = p1_profile
-		#loser_profile = p2_profile
-		#winner_score = p1_score
-		#loser_score = p2_score
-	#elif p2_score > p1_score:
-		#winner_profile = p2_profile
-		#loser_profile = p1_profile
-		#winner_score = p2_score
-		#loser_score = p1_score
-	#else:
-		## Empate - ambos ganan y pierden? O tratamos diferente?
-		#print("⚡ Partida empatada - registrando como empate")
-		## Por ahora, tratamos empates como victorias para ambos? O ninguno?
-		## Decidamos que en empate, nadie gana pero se registra la partida
-		#record_tie(p1_profile, p2_profile, p1_score, p2_score, game_duration)
-		#return
-	#
-	## Actualizar estadísticas del ganador
-	#winner_profile.matches_played += 1
-	#winner_profile.matches_won += 1
-	#winner_profile.total_score += winner_score
-	#winner_profile.highest_score = max(winner_profile.highest_score, winner_score)
-	#winner_profile.play_time += game_duration
-	#winner_profile.last_played = Time.get_date_string_from_system()
-	#
-	## Actualizar estadísticas del perdedor
-	#loser_profile.matches_played += 1
-	#loser_profile.matches_lost += 1
-	#loser_profile.total_score += loser_score
-	#loser_profile.highest_score = max(loser_profile.highest_score, loser_score)
-	#loser_profile.play_time += game_duration
-	#loser_profile.last_played = Time.get_date_string_from_system()
-	#
-	## Actualizar records cara a cara
-	#update_vs_record(winner_profile, loser_profile, winner_score, loser_score, true)
-	#update_vs_record(loser_profile, winner_profile, loser_score, winner_score, false)
-	#
-	## Guardar cambios
-	#save_profiles()
-	#
-	#print("✅ Partida registrada:")
-	#print("   Ganador: ", winner_profile.profile_name, " - Puntos: ", winner_score)
-	#print("   Perdedor: ", loser_profile.profile_name, " - Puntos: ", loser_score)
-	#print("   VS Record: ", winner_profile.profile_name, " vs ", loser_profile.profile_name, 
-		  #" - ", winner_profile.get_record_against(loser_profile.profile_name))
-	#
-	#match_recorded.emit(winner_profile, loser_profile, winner_score, loser_score)
-#
-#func record_tie(profile1: PlayerProfile, profile2: PlayerProfile, score1: int, score2: int, game_duration: float) -> void:
-	## En empate, ambos juegan pero nadie gana
-	#profile1.matches_played += 1
-	#profile1.total_score += score1
-	#profile1.highest_score = max(profile1.highest_score, score1)
-	#profile1.play_time += game_duration
-	#profile1.last_played = Time.get_date_string_from_system()
-	#
-	#profile2.matches_played += 1
-	#profile2.total_score += score2
-	#profile2.highest_score = max(profile2.highest_score, score2)
-	#profile2.play_time += game_duration
-	#profile2.last_played = Time.get_date_string_from_system()
-	#
-	## En empate, no actualizamos records VS
-	#save_profiles()
-	#
-	#print("✅ Empate registrado entre ", profile1.profile_name, " y ", profile2.profile_name)
-#
-#func update_vs_record(profile: PlayerProfile, opponent: PlayerProfile, score_for: int, score_against: int, is_win: bool) -> void:
-	#var opponent_name = opponent.profile_name
-	#
-	#if not profile.vs_records.has(opponent_name):
-		#profile.vs_records[opponent_name] = {"won": 0, "lost": 0, "score_for": 0, "score_against": 0}
-	#
-	#var record = profile.vs_records[opponent_name]
-	#
-	#if is_win:
-		#record["won"] += 1
-	#else:
-		#record["lost"] += 1
-	#
-	#record["score_for"] += score_for
-	#record["score_against"] += score_against
-#
-## === Persistencia ===
-#func save_profiles() -> void:
-	#var save_data = {
-		#"profiles": {},
-		#"current_profiles": current_profiles
-	#}
-	#
-	#for profile_name in profiles:
-		#var profile = profiles[profile_name]
-		#save_data["profiles"][profile_name] = {
-			#"matches_played": profile.matches_played,
-			#"matches_won": profile.matches_won,
-			#"matches_lost": profile.matches_lost,
-			#"total_score": profile.total_score,
-			#"highest_score": profile.highest_score,
-			#"play_time": profile.play_time,
-			#"created_date": profile.created_date,
-			#"last_played": profile.last_played,
-			#"vs_records": profile.vs_records
-		#}
-	#
-	#var file = FileAccess.open(save_path, FileAccess.WRITE)
-	#if file:
-		#file.store_var(save_data)
-		#file.close()
-		#print("💾 Perfiles guardados: ", profiles.size())
-	#else:
-		#print("❌ Error guardando perfiles")
-#
-#func load_profiles() -> void:
-	#var file = FileAccess.open(save_path, FileAccess.READ)
-	#if file:
-		#var save_data = file.get_var()
-		#file.close()
-		#
-		#if save_data is Dictionary:
-			#profiles.clear()
-			#
-			## Cargar perfiles
-			#for profile_name in save_data.get("profiles", {}):
-				#var data = save_data["profiles"][profile_name]
-				#var profile = PlayerProfile.new(profile_name)
-				#
-				#profile.matches_played = data.get("matches_played", 0)
-				#profile.matches_won = data.get("matches_won", 0)
-				#profile.matches_lost = data.get("matches_lost", 0)
-				#profile.total_score = data.get("total_score", 0)
-				#profile.highest_score = data.get("highest_score", 0)
-				#profile.play_time = data.get("play_time", 0.0)
-				#profile.created_date = data.get("created_date", Time.get_date_string_from_system())
-				#profile.last_played = data.get("last_played", Time.get_date_string_from_system())
-				#profile.vs_records = data.get("vs_records", {})
-				#
-				#profiles[profile_name] = profile
-			#
-			## Cargar perfiles actuales
-			#current_profiles = save_data.get("current_profiles", ["", ""])
-			#
-			#print("📂 Perfiles cargados: ", profiles.size())
-		#else:
-			#print("❌ Datos de guardado corruptos")
-	#else:
-		#print("📂 No hay datos de perfiles guardados - creando nuevo sistema")
-#
-## === Utilidades ===
-#func get_vs_stats(profile1: String, profile2: String) -> Dictionary:
-	#var p1 = get_profile(profile1)
-	#var p2 = get_profile(profile2)
-	#
-	#if not p1 or not p2:
-		#return {}
-	#
-	#var p1_vs_p2 = p1.get_record_against(profile2)
-	#var p2_vs_p1 = p2.get_record_against(profile1)
-	#
-	#return {
-		#"profile1": {
-			#"name": profile1,
-			#"won": p1_vs_p2["won"],
-			#"lost": p1_vs_p2["lost"],
-			#"score_for": p1_vs_p2["score_for"],
-			#"score_against": p1_vs_p2["score_against"]
-		#},
-		#"profile2": {
-			#"name": profile2,
-			#"won": p2_vs_p1["won"],
-			#"lost": p2_vs_p1["lost"],
-			#"score_for": p2_vs_p1["score_for"],
-			#"score_against": p2_vs_p1["score_against"]
-		#},
-		#"total_matches": p1_vs_p2["won"] + p1_vs_p2["lost"]
-	#}
-#
-#func clear_all_data() -> void:
-	#profiles.clear()
-	#current_profiles = ["", ""]
-	#
-	#if FileAccess.file_exists(save_path):
-		#DirAccess.remove_absolute(save_path)
-	#
-	#print("🗑️ Todos los datos de perfiles eliminados")
-	#profiles_updated.emit()
+
+class Profile:
+	var profile_name: String
+	var wins: int = 0
+	var losses: int = 0
+	var max_score: int = 0
+	var vs_wins: Dictionary = {}  # Solo contendrá los otros 6 perfiles
+	
+	func _init(name: String):
+		profile_name = name
+		# CORREGIDO: Solo inicializar vs_wins para los otros 6 perfiles
+		vs_wins = {}
+		for i in range(7):
+			var other_profile = "Perfil " + str(i + 1)
+			if other_profile != name:
+				vs_wins[other_profile] = 0
+
+var profiles: Array = []
+var selected_profiles: Dictionary = {}  # {1: profile_index, 2: profile_index}
+var current_players: Dictionary = {}    # {1: profile, 2: profile}
+
+# Variables para acceso fácil desde otras escenas
+var current_profile_p1: String = ""
+var current_profile_p2: String = ""
+var current_profile_p1_index: int = -1
+var current_profile_p2_index: int = -1
+
+# Variables para guardar última selección
+var last_used_profile_p1: int = -1
+var last_used_profile_p2: int = -1
+
+func _ready():
+	# Inicializar los 7 perfiles
+	for i in range(7):
+		profiles.append(Profile.new("Perfil " + str(i + 1)))
+	load_profiles()
+	load_last_selection()
+	print("✅ ProfileManager inicializado con ", profiles.size(), " perfiles")
+
+func get_profile(index: int) -> Profile:
+	if index >= 0 and index < profiles.size():
+		return profiles[index]
+	return null
+
+func select_profile(player: int, profile_index: int) -> bool:
+	# Verificar que no sea el mismo perfil
+	if selected_profiles.values().has(profile_index):
+		return false
+	
+	selected_profiles[player] = profile_index
+	current_players[player] = profiles[profile_index]
+	
+	# Actualizar variables de acceso rápido
+	if player == 1:
+		current_profile_p1 = profiles[profile_index].profile_name
+		current_profile_p1_index = profile_index
+		last_used_profile_p1 = profile_index
+	elif player == 2:
+		current_profile_p2 = profiles[profile_index].profile_name
+		current_profile_p2_index = profile_index
+		last_used_profile_p2 = profile_index
+	
+	print("✅ Perfil seleccionado - P", player, ": ", profiles[profile_index].profile_name)
+	
+	# Guardar automáticamente cuando se selecciona
+	save_profiles()
+	save_last_selection()
+	
+	return true
+
+func clear_selections():
+	selected_profiles.clear()
+	current_players.clear()
+	current_profile_p1 = ""
+	current_profile_p2 = ""
+	current_profile_p1_index = -1
+	current_profile_p2_index = -1
+	print("🔃 Selecciones de perfil limpiadas")
+
+# Cargar automáticamente los últimos perfiles usados
+func auto_load_last_profiles():
+	if last_used_profile_p1 != -1:
+		select_profile(1, last_used_profile_p1)
+		print("🔄 P1: Cargado último perfil usado - ", profiles[last_used_profile_p1].profile_name)
+	
+	if last_used_profile_p2 != -1:
+		select_profile(2, last_used_profile_p2)
+		print("🔄 P2: Cargado último perfil usado - ", profiles[last_used_profile_p2].profile_name)
+
+func are_both_players_selected() -> bool:
+	return selected_profiles.size() == 2
+
+func get_selected_profile_name(player: int) -> String:
+	if current_players.has(player):
+		return current_players[player].profile_name
+	return ""
+
+# Función para registrar resultados
+func register_game_result(winner_player: int, loser_player: int, winner_score: int = 0):
+	if current_players.has(winner_player) and current_players.has(loser_player):
+		var winner_profile = current_players[winner_player]
+		var loser_profile = current_players[loser_player]
+		
+		# Actualizar wins/losses
+		winner_profile.wins += 1
+		loser_profile.losses += 1
+		
+		# Actualizar máximo puntaje
+		if winner_score > winner_profile.max_score:
+			winner_profile.max_score = winner_score
+			print("🏆 Nuevo récord para ", winner_profile.profile_name, ": ", winner_score)
+		
+		# CORREGIDO: Actualizar VS wins dinámicamente
+		var loser_profile_name = loser_profile.profile_name
+		
+		# Si el nombre del perfil perdedor no existe en vs_wins, actualizar todas las referencias
+		if not winner_profile.vs_wins.has(loser_profile_name):
+			# Buscar y actualizar todas las referencias a nombres antiguos
+			update_all_vs_wins_references(loser_profile_name)
+		
+		# Incrementar el contador
+		winner_profile.vs_wins[loser_profile_name] += 1
+		
+		print("✅ Resultado registrado: ", winner_profile.profile_name, " vs ", loser_profile_name)
+		print("   ", winner_profile.profile_name, " - Victorias: ", winner_profile.wins, " | Récord: ", winner_profile.max_score)
+		print("   ", loser_profile_name, " - Derrotas: ", loser_profile.losses)
+		print("   VS Record actualizado: ", winner_profile.vs_wins[loser_profile_name])
+		
+		save_profiles()
+	else:
+		print("❌ Error: No se encontraron perfiles para registrar resultado")
+		print("   Current players: ", current_players)
+		print("   Winner: ", winner_player, " | Loser: ", loser_player)
+
+# NUEVA FUNCIÓN: Actualizar todas las referencias VS cuando se renombra un perfil
+func update_all_vs_wins_references(new_profile_name: String):
+	print("🔄 Actualizando referencias VS para: ", new_profile_name)
+	
+	for profile in profiles:
+		# Si este perfil tiene el nuevo nombre, actualizar todas sus referencias VS
+		if profile.profile_name == new_profile_name:
+			# Reemplazar todas las referencias antiguas por el nuevo nombre
+			for other_profile in profiles:
+				if other_profile.profile_name != new_profile_name:
+					# Si el otro perfil tiene una referencia al nombre antiguo, moverla al nuevo
+					var old_names_to_remove = []
+					for vs_name in other_profile.vs_wins:
+						if vs_name != new_profile_name and vs_name.begins_with("Perfil "):
+							# Esta es una referencia antigua, transferir el valor
+							if not other_profile.vs_wins.has(new_profile_name):
+								other_profile.vs_wins[new_profile_name] = 0
+							other_profile.vs_wins[new_profile_name] += other_profile.vs_wins[vs_name]
+							old_names_to_remove.append(vs_name)
+					
+					# Eliminar las referencias antiguas
+					for old_name in old_names_to_remove:
+						other_profile.vs_wins.erase(old_name)
+
+func save_profiles():
+	var save_data = []
+	for profile in profiles:
+		var profile_data = {
+			"name": profile.profile_name,
+			"wins": profile.wins,
+			"losses": profile.losses,
+			"max_score": profile.max_score,
+			"vs_wins": profile.vs_wins
+		}
+		save_data.append(profile_data)
+	
+	var file = FileAccess.open("user://profiles.save", FileAccess.WRITE)
+	if file:
+		file.store_var(save_data)
+		file.close()
+		print("💾 Perfiles guardados correctamente")
+	else:
+		print("❌ Error al guardar perfiles: ", FileAccess.get_open_error())
+
+func load_profiles():
+	if FileAccess.file_exists("user://profiles.save"):
+		var file = FileAccess.open("user://profiles.save", FileAccess.READ)
+		if file:
+			var save_data = file.get_var()
+			file.close()
+			
+			if save_data != null and save_data is Array:
+				for i in range(min(profiles.size(), save_data.size())):
+					var data = save_data[i]
+					if data is Dictionary:
+						profiles[i].profile_name = data.get("name", "Perfil " + str(i + 1))
+						profiles[i].wins = data.get("wins", 0)
+						profiles[i].losses = data.get("losses", 0)
+						profiles[i].max_score = data.get("max_score", 0)
+						profiles[i].vs_wins = data.get("vs_wins", {})
+						
+						# CORREGIDO: Solo asegurar referencias a los 7 perfiles
+						ensure_basic_vs_wins(profiles[i])
+				
+				print("📂 Perfiles cargados desde disco - ", profiles.size(), " perfiles")
+			else:
+				print("❌ Datos de archivo corruptos, usando valores por defecto")
+		else:
+			print("❌ No se pudo abrir el archivo de perfiles")
+	else:
+		print("📂 No se encontró archivo de perfiles, usando valores por defecto")
+
+# CORREGIDO: Solo asegurar referencias básicas a los 7 perfiles
+func ensure_basic_vs_wins(profile: Profile):
+	# Solo asegurar que existan referencias a los otros 6 perfiles base
+	for i in range(7):
+		var base_profile_name = "Perfil " + str(i + 1)
+		if base_profile_name != profile.profile_name and not profile.vs_wins.has(base_profile_name):
+			profile.vs_wins[base_profile_name] = 0
+
+# Sistema de última selección
+func save_last_selection():
+	var last_selection_data = {
+		"last_p1": last_used_profile_p1,
+		"last_p2": last_used_profile_p2
+	}
+	
+	var file = FileAccess.open("user://last_selection.save", FileAccess.WRITE)
+	if file:
+		file.store_var(last_selection_data)
+		file.close()
+		print("💾 Última selección guardada - P1: ", last_used_profile_p1, " | P2: ", last_used_profile_p2)
+
+func load_last_selection():
+	if FileAccess.file_exists("user://last_selection.save"):
+		var file = FileAccess.open("user://last_selection.save", FileAccess.READ)
+		if file:
+			var last_selection_data = file.get_var()
+			file.close()
+			
+			if last_selection_data != null and last_selection_data is Dictionary:
+				last_used_profile_p1 = last_selection_data.get("last_p1", -1)
+				last_used_profile_p2 = last_selection_data.get("last_p2", -1)
+				print("📂 Última selección cargada - P1: ", last_used_profile_p1, " | P2: ", last_used_profile_p2)
+			else:
+				print("❌ Datos de última selección corruptos")
+		else:
+			print("❌ No se pudo abrir el archivo de última selección")
+	else:
+		print("📂 No se encontró archivo de última selección")
+
+# Función para debug mejorada
+func print_all_profiles():
+	print("=== ESTADO DE TODOS LOS PERFILES ===")
+	for i in range(profiles.size()):
+		var profile = profiles[i]
+		print("Perfil ", i + 1, ": ", profile.profile_name)
+		print("   Victorias: ", profile.wins, " | Derrotas: ", profile.losses)
+		print("   Récord: ", profile.max_score)
+		print("   VS Wins: ")
+		for vs_name in profile.vs_wins:
+			print("     - ", vs_name, ": ", profile.vs_wins[vs_name])
+	print("===================================")
+
+# Función para forzar guardado (útil para testing)
+func force_save():
+	save_profiles()
+	save_last_selection()
+
+# Función para forzar carga (útil para testing)
+func force_load():
+	load_profiles()
+	load_last_selection()

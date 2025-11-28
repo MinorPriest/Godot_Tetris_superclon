@@ -376,7 +376,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StartNewGame" type="Button" parent="."]
-visible = false
 layout_mode = 0
 offset_left = 400.0
 offset_top = 600.0
@@ -384,7 +383,17 @@ offset_right = 758.0
 offset_bottom = 650.0
 theme_override_fonts/font = ExtResource("2_psnte")
 theme_override_font_sizes/font_size = 24
-text = "INICIAR PARTIDA"
+text = "Reiniciar"
+
+[node name="BackToSelection" type="Button" parent="."]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 552.0
+offset_right = 758.0
+offset_bottom = 602.0
+theme_override_fonts/font = ExtResource("2_psnte")
+theme_override_font_sizes/font_size = 24
+text = "Regresar al Menú"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 340)
@@ -396,3 +405,37 @@ position = Vector2(333, 335)
 
 [node name="P2AttackGauge" parent="." instance=ExtResource("9_fbb48")]
 z_index = 10
+
+[node name="Bg_P1_profile" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 360.0
+offset_top = 64.0
+offset_right = 488.0
+offset_bottom = 96.0
+
+[node name="P1_Profile" type="Label" parent="."]
+layout_mode = 0
+offset_left = 360.0
+offset_top = 64.0
+offset_right = 488.0
+offset_bottom = 96.0
+theme_override_fonts/font = ExtResource("2_psnte")
+text = "P1: MinorPriest"
+vertical_alignment = 1
+
+[node name="Bg_P2_Profile" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 664.0
+offset_top = 64.0
+offset_right = 792.0
+offset_bottom = 96.0
+
+[node name="P2_Profile" type="Label" parent="."]
+layout_mode = 0
+offset_left = 664.0
+offset_top = 64.0
+offset_right = 792.0
+offset_bottom = 96.0
+theme_override_fonts/font = ExtResource("2_psnte")
+text = "P2: Michi"
+vertical_alignment = 1

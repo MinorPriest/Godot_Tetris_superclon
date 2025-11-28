@@ -1,0 +1,388 @@
+[gd_scene load_steps=21 format=3 uid="uid://ck1v4u8bc7hnn"]
+
+[ext_resource type="Texture2D" uid="uid://dbpliuhbdjagw" path="res://Assets/Profiles_HUD_Background.png" id="2_o3oio"]
+[ext_resource type="Texture2D" uid="uid://c5hv5jbrlbcp6" path="res://Assets/Mark 256x256.png" id="3_rv4dt"]
+[ext_resource type="Texture2D" uid="uid://dsbkaqiijh50r" path="res://Assets/Mark 128x64.png" id="4_2txdp"]
+[ext_resource type="Texture2D" uid="uid://cjurdhs2dd80h" path="res://Assets/P1_Cursor.png" id="5_2txdp"]
+[ext_resource type="FontFile" uid="uid://f0wrkwcqg4jx" path="res://Assets/Fonts/Fortzilla_Font_1_14/OpenType (.otf)/Fortzilla-Regular.otf" id="5_rv4dt"]
+[ext_resource type="Texture2D" uid="uid://bo8cq6e6utmog" path="res://Assets/P2_Cursor.png" id="6_rgt02"]
+[ext_resource type="Texture2D" uid="uid://2evvusnuxbrs" path="res://Assets/Mark 320x128.png" id="7_rgt02"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rgt02"]
+atlas = ExtResource("3_rv4dt")
+region = Rect2(0, 0, 272, 272)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o3oio"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rgt02")
+}],
+"loop": true,
+"name": &"Mark",
+"speed": 3.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3oio"]
+atlas = ExtResource("3_rv4dt")
+region = Rect2(0, 0, 272, 272)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cnd1s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3oio")
+}],
+"loop": true,
+"name": &"Mark",
+"speed": 3.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bw1n4"]
+atlas = ExtResource("4_2txdp")
+region = Rect2(0, 0, 128, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3gh3y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bw1n4")
+}],
+"loop": true,
+"name": &"Mark",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cnd1s"]
+atlas = ExtResource("7_rgt02")
+region = Rect2(0, 0, 328, 144)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uaovp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnd1s")
+}],
+"loop": true,
+"name": &"Mark",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e57px"]
+atlas = ExtResource("6_rgt02")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bw1n4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e57px")
+}],
+"loop": true,
+"name": &"P2_Cursor",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rv4dt"]
+atlas = ExtResource("5_2txdp")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2txdp"]
+atlas = ExtResource("5_2txdp")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rgt02"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rv4dt")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_2txdp")
+}],
+"loop": false,
+"name": &"P1_Cursor",
+"speed": 5.0
+}]
+
+[node name="Profiles" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(576, 340)
+texture = ExtResource("2_o3oio")
+
+[node name="P2_Container" type="ColorRect" parent="."]
+offset_left = 640.0
+offset_top = 64.0
+offset_right = 896.0
+offset_bottom = 192.0
+color = Color(0, 0, 0, 1)
+
+[node name="P1_Container" type="ColorRect" parent="."]
+offset_left = 256.0
+offset_top = 64.0
+offset_right = 512.0
+offset_bottom = 192.0
+color = Color(0, 0, 0, 1)
+
+[node name="P1_NewProfile" type="Button" parent="."]
+offset_left = 56.0
+offset_top = 64.0
+offset_right = 184.0
+offset_bottom = 128.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Nuevo Perfil"
+
+[node name="P1_ScrollContainer" type="ScrollContainer" parent="."]
+offset_left = 192.0
+offset_top = 64.0
+offset_right = 512.0
+offset_bottom = 192.0
+
+[node name="P1_VBoxContainer" type="VBoxContainer" parent="P1_ScrollContainer"]
+layout_mode = 2
+
+[node name="Profile1" type="CheckButton" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil1"
+
+[node name="LineEdit" type="LineEdit" parent="P1_ScrollContainer/P1_VBoxContainer/Profile1"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="Profile2" type="CheckButton" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil2"
+alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="P1_ScrollContainer/P1_VBoxContainer/Profile2"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="Profile3" type="CheckButton" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil3"
+
+[node name="LineEdit" type="LineEdit" parent="P1_ScrollContainer/P1_VBoxContainer/Profile3"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="Profile4" type="CheckButton" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil4"
+
+[node name="LineEdit" type="LineEdit" parent="P1_ScrollContainer/P1_VBoxContainer/Profile4"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="Profile5" type="CheckButton" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil5
+"
+
+[node name="LineEdit" type="LineEdit" parent="P1_ScrollContainer/P1_VBoxContainer/Profile5"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="P1_Profile" type="Label" parent="."]
+offset_left = 256.0
+offset_top = 256.0
+offset_right = 512.0
+offset_bottom = 320.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Perfil Seleccionado
+"
+
+[node name="P1_EraseProfile" type="Button" parent="."]
+offset_left = 56.0
+offset_top = 192.0
+offset_right = 184.0
+offset_bottom = 256.0
+text = "Borrar"
+
+[node name="P1_Cancel" type="Button" parent="."]
+offset_left = 384.0
+offset_top = 592.0
+offset_right = 512.0
+offset_bottom = 656.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Atrás"
+
+[node name="P2_NewProfile" type="Button" parent="."]
+offset_left = 960.0
+offset_top = 64.0
+offset_right = 1088.0
+offset_bottom = 128.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Nuevo Perfil"
+
+[node name="P2_ScrollContainer" type="ScrollContainer" parent="."]
+offset_left = 576.0
+offset_top = 64.0
+offset_right = 896.0
+offset_bottom = 192.0
+
+[node name="P2_VBoxContainer" type="VBoxContainer" parent="P2_ScrollContainer"]
+layout_mode = 2
+
+[node name="Profile1" type="CheckButton" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil1"
+
+[node name="LineEdit" type="LineEdit" parent="P2_ScrollContainer/P2_VBoxContainer/Profile1"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="Profile2" type="CheckButton" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil2"
+
+[node name="LineEdit" type="LineEdit" parent="P2_ScrollContainer/P2_VBoxContainer/Profile2"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="Profile3" type="CheckButton" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil2"
+
+[node name="LineEdit" type="LineEdit" parent="P2_ScrollContainer/P2_VBoxContainer/Profile3"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="Profile4" type="CheckButton" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil4"
+
+[node name="LineEdit" type="LineEdit" parent="P2_ScrollContainer/P2_VBoxContainer/Profile4"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="Profile5" type="CheckButton" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil5"
+
+[node name="LineEdit" type="LineEdit" parent="P2_ScrollContainer/P2_VBoxContainer/Profile5"]
+layout_mode = 0
+offset_right = 68.5625
+offset_bottom = 31.0
+
+[node name="P2_Profile" type="Label" parent="."]
+offset_left = 640.0
+offset_top = 256.0
+offset_right = 896.0
+offset_bottom = 320.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Perfil Seleccionado"
+
+[node name="P2_EraseProfile" type="Button" parent="."]
+offset_left = 960.0
+offset_top = 192.0
+offset_right = 1088.0
+offset_bottom = 256.0
+text = "Borrar"
+
+[node name="P2_Cancel" type="Button" parent="."]
+offset_left = 640.0
+offset_top = 592.0
+offset_right = 768.0
+offset_bottom = 656.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Atrás"
+
+[node name="P1_ProfileStats" type="RichTextLabel" parent="."]
+offset_left = 256.0
+offset_top = 320.0
+offset_right = 512.0
+offset_bottom = 576.0
+text = "Nombre:
+Ganes:
+Derrotas:
+VS:
+VS:
+"
+
+[node name="P2_ProfileStats" type="RichTextLabel" parent="."]
+offset_left = 640.0
+offset_top = 320.0
+offset_right = 896.0
+offset_bottom = 576.0
+text = "Nombre:
+Ganes:
+Derrotas:
+VS:
+VS:"
+
+[node name="Mark1" type="AnimatedSprite2D" parent="."]
+position = Vector2(384, 448)
+sprite_frames = SubResource("SpriteFrames_o3oio")
+animation = &"Mark"
+autoplay = "Mark"
+frame_progress = 0.5806962
+
+[node name="Mark2" type="AnimatedSprite2D" parent="."]
+position = Vector2(768, 448)
+sprite_frames = SubResource("SpriteFrames_cnd1s")
+animation = &"Mark"
+autoplay = "Mark"
+
+[node name="Mark3" type="AnimatedSprite2D" parent="."]
+position = Vector2(120, 224)
+sprite_frames = SubResource("SpriteFrames_3gh3y")
+animation = &"Mark"
+
+[node name="Mark4" type="AnimatedSprite2D" parent="."]
+position = Vector2(120, 96)
+sprite_frames = SubResource("SpriteFrames_3gh3y")
+animation = &"Mark"
+
+[node name="Mark5" type="AnimatedSprite2D" parent="."]
+position = Vector2(1024, 96)
+sprite_frames = SubResource("SpriteFrames_3gh3y")
+animation = &"Mark"
+
+[node name="Mark6" type="AnimatedSprite2D" parent="."]
+position = Vector2(1024, 224)
+sprite_frames = SubResource("SpriteFrames_3gh3y")
+animation = &"Mark"
+
+[node name="Mark7" type="AnimatedSprite2D" parent="."]
+position = Vector2(448, 624)
+sprite_frames = SubResource("SpriteFrames_3gh3y")
+animation = &"Mark"
+
+[node name="Mark8" type="AnimatedSprite2D" parent="."]
+position = Vector2(704, 624)
+sprite_frames = SubResource("SpriteFrames_3gh3y")
+animation = &"Mark"
+
+[node name="Mark9" type="AnimatedSprite2D" parent="."]
+position = Vector2(384, 128)
+scale = Vector2(0.8292683, 1)
+sprite_frames = SubResource("SpriteFrames_uaovp")
+animation = &"Mark"
+
+[node name="Mark10" type="AnimatedSprite2D" parent="."]
+position = Vector2(770, 128)
+scale = Vector2(0.81707317, 1)
+sprite_frames = SubResource("SpriteFrames_uaovp")
+animation = &"Mark"
+
+[node name="P2_Cursor" type="AnimatedSprite2D" parent="."]
+position = Vector2(600, 296)
+sprite_frames = SubResource("SpriteFrames_bw1n4")
+animation = &"P2_Cursor"
+
+[node name="P1_Cursor" type="AnimatedSprite2D" parent="."]
+position = Vector2(216, 296)
+sprite_frames = SubResource("SpriteFrames_rgt02")
+animation = &"P1_Cursor"

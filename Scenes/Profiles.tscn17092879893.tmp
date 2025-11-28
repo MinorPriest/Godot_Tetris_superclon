@@ -1,0 +1,157 @@
+[gd_scene load_steps=7 format=3 uid="uid://ck1v4u8bc7hnn"]
+
+[ext_resource type="Script" uid="uid://cwsd7v4hxa4yb" path="res://Scripts/Profiles.gd" id="1_q0403"]
+[ext_resource type="Texture2D" uid="uid://r0md0u18v416" path="res://Assets/P1_HUD_Sprite.png" id="3_e57px"]
+[ext_resource type="Texture2D" uid="uid://d3ihrnw72o8ds" path="res://Assets/P2_HUD_Sprite.png" id="4_rv4dt"]
+[ext_resource type="Texture2D" uid="uid://cjurdhs2dd80h" path="res://Assets/P1_Cursor.png" id="5_2txdp"]
+[ext_resource type="FontFile" uid="uid://f0wrkwcqg4jx" path="res://Assets/Fonts/Fortzilla_Font_1_14/OpenType (.otf)/Fortzilla-Regular.otf" id="5_rv4dt"]
+[ext_resource type="Texture2D" uid="uid://bo8cq6e6utmog" path="res://Assets/P2_Cursor.png" id="6_rgt02"]
+
+[node name="Profiles" type="Node2D"]
+script = ExtResource("1_q0403")
+
+[node name="P1_Profile" type="LineEdit" parent="."]
+offset_left = 256.0
+offset_top = 320.0
+offset_right = 512.0
+offset_bottom = 384.0
+alignment = 1
+virtual_keyboard_type = 1
+clear_button_enabled = true
+right_icon = ExtResource("3_e57px")
+
+[node name="P1_Create" type="Button" parent="."]
+offset_left = 256.0
+offset_top = 384.0
+offset_right = 384.0
+offset_bottom = 448.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Crear"
+
+[node name="P1_Cancel" type="Button" parent="."]
+offset_left = 384.0
+offset_top = 384.0
+offset_right = 512.0
+offset_bottom = 448.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Atrás"
+
+[node name="P2_Profile" type="LineEdit" parent="."]
+offset_left = 640.0
+offset_top = 320.0
+offset_right = 896.0
+offset_bottom = 384.0
+alignment = 1
+clear_button_enabled = true
+right_icon = ExtResource("4_rv4dt")
+
+[node name="P2_Create" type="Button" parent="."]
+offset_left = 640.0
+offset_top = 384.0
+offset_right = 768.0
+offset_bottom = 448.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Crear"
+
+[node name="P2_Cancel" type="Button" parent="."]
+offset_left = 768.0
+offset_top = 384.0
+offset_right = 896.0
+offset_bottom = 448.0
+theme_override_fonts/font = ExtResource("5_rv4dt")
+text = "Atrás"
+
+[node name="P1_ScrollContainer" type="ScrollContainer" parent="."]
+offset_left = 256.0
+offset_top = 64.0
+offset_right = 512.0
+offset_bottom = 192.0
+
+[node name="P1_VBoxContainer" type="VBoxContainer" parent="P1_ScrollContainer"]
+layout_mode = 2
+
+[node name="Profile1" type="Button" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil1"
+
+[node name="Profile2" type="Button" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil2"
+
+[node name="Profile3" type="Button" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil3"
+
+[node name="Profile4" type="Button" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil4"
+
+[node name="Profile5" type="Button" parent="P1_ScrollContainer/P1_VBoxContainer"]
+layout_mode = 2
+text = "Perfil5
+"
+
+[node name="P1_SelectProfile" type="Button" parent="."]
+offset_left = 256.0
+offset_top = 200.0
+offset_right = 384.0
+offset_bottom = 264.0
+text = "Seleccionar"
+
+[node name="P1_EraseProfile" type="Button" parent="."]
+offset_left = 384.0
+offset_top = 200.0
+offset_right = 512.0
+offset_bottom = 264.0
+text = "Borrar"
+
+[node name="P2_ScrollContainer" type="ScrollContainer" parent="."]
+offset_left = 640.0
+offset_top = 64.0
+offset_right = 896.0
+offset_bottom = 192.0
+
+[node name="P2_VBoxContainer" type="VBoxContainer" parent="P2_ScrollContainer"]
+layout_mode = 2
+
+[node name="Profile1" type="Button" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil1"
+
+[node name="Profile2" type="Button" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil2"
+
+[node name="Profile3" type="Button" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil2"
+
+[node name="Profile4" type="Button" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil4"
+
+[node name="Profile5" type="Button" parent="P2_ScrollContainer/P2_VBoxContainer"]
+layout_mode = 2
+text = "Perfil5"
+
+[node name="P2_SelectProfile" type="Button" parent="."]
+offset_left = 640.0
+offset_top = 200.0
+offset_right = 768.0
+offset_bottom = 264.0
+text = "Seleccionar"
+
+[node name="P2_EraseProfile" type="Button" parent="."]
+offset_left = 768.0
+offset_top = 200.0
+offset_right = 896.0
+offset_bottom = 264.0
+text = "Borrar"
+
+[node name="P1_Cursor" type="Sprite2D" parent="."]
+position = Vector2(216, 296)
+texture = ExtResource("5_2txdp")
+
+[node name="P2_Cursor" type="Sprite2D" parent="."]
+position = Vector2(600, 296)
+texture = ExtResource("6_rgt02")

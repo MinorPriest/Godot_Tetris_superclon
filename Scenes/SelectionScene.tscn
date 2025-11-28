@@ -1,43 +1,231 @@
-[gd_scene load_steps=5 format=3 uid="uid://ekios00r8jai"]
+[gd_scene load_steps=29 format=3 uid="uid://ekios00r8jai"]
 
 [ext_resource type="FontFile" uid="uid://f0wrkwcqg4jx" path="res://Assets/Fonts/Fortzilla_Font_1_14/OpenType (.otf)/Fortzilla-Regular.otf" id="1_mthaa"]
+[ext_resource type="Script" uid="uid://bp883yku1vblo" path="res://Scripts/Selection_Scene.gd" id="1_u5on8"]
+[ext_resource type="Texture2D" uid="uid://dbpliuhbdjagw" path="res://Assets/Profiles_HUD_Background.png" id="2_7e3dj"]
 [ext_resource type="Texture2D" uid="uid://8sj0v8c54rg2" path="res://Assets/P1vsP2_HUD_Sprite.png" id="2_akex1"]
-[ext_resource type="Texture2D" uid="uid://r0md0u18v416" path="res://Assets/P1_HUD_Sprite.png" id="3_373d8"]
 [ext_resource type="Texture2D" uid="uid://bxgf18n06wjua" path="res://Assets/Profiles_HUD_Sprite.png" id="4_akex1"]
+[ext_resource type="Texture2D" uid="uid://bt32tkfabe6ss" path="res://Assets/Puzzle_mayhem1.png" id="5_khlef"]
+[ext_resource type="Texture2D" uid="uid://bc2lvteadvrgw" path="res://Assets/Puzzle_mayhem2.png" id="6_k0jwm"]
+[ext_resource type="Texture2D" uid="uid://dvbu3f5o0in0f" path="res://Assets/Puzzle_mayhem3.png" id="7_sf3yl"]
+[ext_resource type="Texture2D" uid="uid://bq1gwor2dhbvx" path="res://Assets/P1vsCPU_HUD_Sprite.png" id="8_khlef"]
+[ext_resource type="Texture2D" uid="uid://b5xb23n6tjvn3" path="res://Assets/Puzzle_mayhem4.png" id="8_r3iat"]
+[ext_resource type="Texture2D" uid="uid://cl3quc2cxfduh" path="res://Assets/Puzzle_mayhem5.png" id="9_qrvl8"]
+[ext_resource type="Texture2D" uid="uid://by2dcf43hlbp2" path="res://Assets/Puzzle_Mayhem6.png" id="10_k0jwm"]
+[ext_resource type="Texture2D" uid="uid://b3ts44tsryj54" path="res://Assets/Options_HUD_Sprite.png" id="11_qrvl8"]
+[ext_resource type="Texture2D" uid="uid://dkayx4r63y2b" path="res://Assets/Puzzle_mayhem8.png" id="12_r3iat"]
+[ext_resource type="PackedScene" uid="uid://dttn6633sevf5" path="res://Scenes/Title_Selector.tscn" id="14_u5on8"]
+[ext_resource type="Texture2D" uid="uid://dcfjukrsn2yv1" path="res://Assets/Joystick.png" id="15_dqkrl"]
+[ext_resource type="Texture2D" uid="uid://c78y4pymh1bxj" path="res://Assets/NOTAVIABLE.png" id="17_hyh0i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5on8"]
+atlas = ExtResource("5_khlef")
+region = Rect2(0, 0, 1152, 680)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqkrl"]
+atlas = ExtResource("6_k0jwm")
+region = Rect2(0, 0, 1152, 680)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7e3dj"]
+atlas = ExtResource("7_sf3yl")
+region = Rect2(0, 0, 1152, 680)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hyh0i"]
+atlas = ExtResource("8_r3iat")
+region = Rect2(0, 0, 1152, 680)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cat4k"]
+atlas = ExtResource("9_qrvl8")
+region = Rect2(0, 0, 1152, 680)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mol8p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5on8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqkrl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7e3dj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hyh0i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cat4k")
+}],
+"loop": true,
+"name": &"SelectionScreen",
+"speed": 4.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sf3yl"]
+atlas = ExtResource("10_k0jwm")
+region = Rect2(0, 0, 400, 200)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r3iat"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sf3yl")
+}],
+"loop": true,
+"name": &"SelectionScreen",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_woxlv"]
+atlas = ExtResource("12_r3iat")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4rsop"]
+atlas = ExtResource("12_r3iat")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u5ac1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_woxlv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4rsop")
+}],
+"loop": true,
+"name": &"Babe",
+"speed": 2.0
+}]
 
 [node name="SelectionScene" type="Node2D"]
+script = ExtResource("1_u5on8")
+
+[node name="SelectionScreenBackground" type="Sprite2D" parent="."]
+position = Vector2(576, 340)
+texture = ExtResource("2_7e3dj")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_right = 1152.0
 offset_bottom = 680.0
-color = Color(0.096204735, 0.09620475, 0.096204735, 1)
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="Title_Puzzle" type="AnimatedSprite2D" parent="."]
+position = Vector2(650, 340)
+sprite_frames = SubResource("SpriteFrames_mol8p")
+animation = &"SelectionScreen"
+autoplay = "SelectionScreen"
+
+[node name="Title_Mayhem" type="AnimatedSprite2D" parent="."]
+position = Vector2(504, 200.00002)
+rotation = -0.122173056
+scale = Vector2(2, 1)
+sprite_frames = SubResource("SpriteFrames_r3iat")
+animation = &"SelectionScreen"
+autoplay = "SelectionScreen"
 
 [node name="VS_Mode" type="Button" parent="."]
-offset_left = 448.0
-offset_top = 64.0
-offset_right = 704.0
-offset_bottom = 128.0
-scale = Vector2(2, 2)
+offset_left = 64.0
+offset_top = 320.0
+offset_right = 320.0
+offset_bottom = 384.0
 theme_override_fonts/font = ExtResource("1_mthaa")
 text = "Multijugador Local"
 icon = ExtResource("2_akex1")
 
 [node name="CPU_Mode" type="Button" parent="."]
-offset_left = 448.0
-offset_top = 128.0
-offset_right = 704.0
-offset_bottom = 192.0
-scale = Vector2(2, 2)
+offset_left = 64.0
+offset_top = 384.0
+offset_right = 320.0
+offset_bottom = 448.0
 theme_override_fonts/font = ExtResource("1_mthaa")
 text = "VS CPU"
-icon = ExtResource("3_373d8")
+icon = ExtResource("8_khlef")
 
 [node name="Profiles" type="Button" parent="."]
-offset_left = 448.0
-offset_top = 192.0
-offset_right = 704.0
-offset_bottom = 256.0
-scale = Vector2(2, 2)
+offset_left = 64.0
+offset_top = 448.0
+offset_right = 320.0
+offset_bottom = 512.0
 theme_override_fonts/font = ExtResource("1_mthaa")
 text = "Perfiles"
 icon = ExtResource("4_akex1")
+
+[node name="Options" type="Button" parent="."]
+offset_left = 64.0
+offset_top = 512.0
+offset_right = 320.0
+offset_bottom = 576.0
+theme_override_fonts/font = ExtResource("1_mthaa")
+text = "Configuraciones"
+icon = ExtResource("11_qrvl8")
+
+[node name="Title_Babe" type="AnimatedSprite2D" parent="."]
+position = Vector2(1030, 200)
+sprite_frames = SubResource("SpriteFrames_u5ac1")
+animation = &"Babe"
+autoplay = "Babe"
+
+[node name="NOTAVIABLE1" type="Sprite2D" parent="."]
+position = Vector2(192, 416)
+rotation = -0.12217305
+texture = ExtResource("17_hyh0i")
+
+[node name="NOTAVIABLE2" type="Sprite2D" parent="."]
+position = Vector2(192, 544)
+rotation = -0.15707964
+texture = ExtResource("17_hyh0i")
+
+[node name="Title_Selector" parent="." instance=ExtResource("14_u5on8")]
+position = Vector2(192, 544)
+
+[node name="Joystick" type="Sprite2D" parent="."]
+position = Vector2(728, 536)
+texture = ExtResource("15_dqkrl")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Instruccions1" type="Label" parent="."]
+offset_left = 832.0
+offset_top = 336.0
+offset_right = 1093.0
+offset_bottom = 385.0
+theme_override_fonts/font = ExtResource("1_mthaa")
+text = "¡Ataque derecho!
+Right Attack!"
+vertical_alignment = 1
+
+[node name="Instruccions2" type="Label" parent="."]
+offset_left = 360.0
+offset_top = 336.0
+offset_right = 621.0
+offset_bottom = 385.0
+theme_override_fonts/font = ExtResource("1_mthaa")
+text = "¡Ataque izquierdo!
+Left Attack!"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Instruccions3" type="Label" parent="."]
+offset_left = 944.0
+offset_top = 432.0
+offset_right = 1036.0
+offset_bottom = 481.0
+theme_override_fonts/font = ExtResource("1_mthaa")
+text = "Retroceder
+Back"
+
+[node name="Instruccions4" type="Label" parent="."]
+offset_left = 944.0
+offset_top = 560.0
+offset_right = 1063.0
+offset_bottom = 609.0
+theme_override_fonts/font = ExtResource("1_mthaa")
+text = "Aceptar/Rotar
+Accept/Rotate"
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2(856, 544)
+points = PackedVector2Array(80, 32, 0, 0)
+width = 3.0
+default_color = Color(0, 0, 0, 1)

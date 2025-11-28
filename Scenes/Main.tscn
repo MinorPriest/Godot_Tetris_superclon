@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://c47xgu37qrswu"]
+[gd_scene load_steps=18 format=4 uid="uid://c47xgu37qrswu"]
 
 [ext_resource type="Script" uid="uid://1ia18xr36gqt" path="res://Scripts/Main/Main.gd" id="1_idj7w"]
 [ext_resource type="Texture2D" uid="uid://ddf057npck82f" path="res://Assets/tetrominoes.png" id="2_kln2b"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dnawqhup7wf12" path="res://Scripts/Main/DJ.gd" id="5_v1gob"]
 [ext_resource type="PackedScene" uid="uid://dyyp1vjytt7bc" path="res://Scenes/BackGround.tscn" id="7_jw32o"]
 [ext_resource type="AudioStream" uid="uid://c3d5pn34hiu2o" path="res://Sounds/Track3.mp3" id="8_50glp"]
+[ext_resource type="Script" uid="uid://5nuvsvw6ocmf" path="res://Scripts/FPSDisplay.gd" id="9_vy5pj"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gw17c"]
 texture = ExtResource("2_kln2b")
@@ -76,6 +77,9 @@ sources/0 = SubResource("TileSetAtlasSource_rgh2o")
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_idj7w")
 
+[node name="FPSDisplay" type="CanvasLayer" parent="."]
+script = ExtResource("9_vy5pj")
+
 [node name="HUD" parent="." instance=ExtResource("2_rgh2o")]
 
 [node name="P1Board" type="TileMapLayer" parent="."]
@@ -107,4 +111,3 @@ volume_db = -10.0
 autoplay = true
 
 [node name="BackGround" parent="." instance=ExtResource("7_jw32o")]
-texture = null

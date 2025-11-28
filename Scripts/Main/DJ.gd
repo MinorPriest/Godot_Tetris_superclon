@@ -26,9 +26,6 @@ func initialize(main_node) -> void:
 	
 	if background_music:
 		print("🎵 BackgroundMusic encontrado en escena")
-		
-		# Configurar la música
-		setup_background_music()
 	else:
 		print("❌ No se encontró el nodo BackgroundMusic en la escena")
 
@@ -44,11 +41,14 @@ func setup_background_music() -> void:
 	background_music.volume_db = 0.0
 	background_music.autoplay = true
 	
-	# Conectar la señal de finished
+	# Conectar la señal de finished (solo si no está conectada)
 	if not background_music.finished.is_connected(_on_background_music_finished):
 		background_music.finished.connect(_on_background_music_finished)
 	
-	# FORZAR REPRODUCCIÓN
+	# FORZAR REPRODUCCIÓN - CORRECCIÓN: Detener primero si está reproduciendo
+	if background_music.playing:
+		background_music.stop()
+	
 	background_music.play()
 	
 	print("🎵 Música ALEATORIA iniciada")
@@ -116,14 +116,23 @@ func get_current_track_info() -> String:
 		return music_tracks[current_track_index].get_file()
 	return "No hay pista cargada"
 
-# El resto de las funciones permanecen igual...
 func play_sound(sound_name: String) -> void:
 	var sound_resources = {
 		"piece_land": preload("res://sounds/piece_land.mp3"),
+		"selectionScreen": preload("res://Sounds/RetroSound.mp3"),
+		"player_1": preload("res://sounds/player_1.mp3"),
+		"player_2": preload("res://Sounds/player_2.mp3"),
 		"match": preload("res://sounds/match.mp3"),
 		"attack_land": preload("res://sounds/attack_land.mp3"),
 		"game_over_win": preload("res://sounds/game_over_win.mp3"),
-		"game_start": preload("res://sounds/game_start.mp3")
+		"menu_move": preload("res://Sounds/menu_move.mp3"),
+		"menu_select": preload("res://Sounds/menu_select.mp3"),
+		"game_start": preload("res://sounds/game_start.mp3"),
+		"attack_launch": preload("res://sounds/attack_launch.mp3"),
+		#"charge_gained": preload("res://sounds/charge_gained.mp3"),
+		#"game_pause": preload("res://sounds/game_pause.mp3"),
+		#"game_resume": preload("res://sounds/game_resume.mp3"),
+		#"game_over_draw": preload("res://sounds/game_over_draw.mp3")
 	}
 	
 	if sound_resources.has(sound_name):
